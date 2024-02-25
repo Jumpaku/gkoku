@@ -44,5 +44,5 @@ func main() {
 			fmt.Fprintf(out, "%d %d %d %d %d %d\n", sutSec, sutNano, inSec, inNano, wantSec, wantNano)
 		}
 	}
-	log.Println("func (Duration) Add testcases successfully generated in " + outputPath)
+	log.Println("func (Instant) Add testcases successfully generated in " + outputPath)
 }

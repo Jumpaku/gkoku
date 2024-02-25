@@ -30,19 +30,15 @@ func main() {
 
 	fmt.Fprintln(out, len(nanos)*len(nanos))
 	for _, sut := range nanos {
-		for _, in := range nanos {
+		for _, inNano := range nanos {
 			sutSec, sutNano, ok := cmd.Decompose(big.NewInt(sut))
 			if !ok {
 				log.Panicf("%+v", sut)
 			}
-			inSec, inNano, ok := cmd.Decompose(big.NewInt(in))
-			if !ok {
-				log.Panicf("%+v", in)
-			}
-			wantSec, wantNano, _ := cmd.Decompose((&big.Int{}).Add(big.NewInt(sut), big.NewInt(in)))
+			wantSec, wantNano, _ := cmd.Decompose((&big.Int{}).Add(big.NewInt(sut), big.NewInt(inNano)))
 
-			fmt.Fprintf(out, "%d %d %d %d %d %d\n", sutSec, sutNano, inSec, inNano, wantSec, wantNano)
+			fmt.Fprintf(out, "%d %d %d %d %d\n", sutSec, sutNano, inNano, wantSec, wantNano)
 		}
 	}
-	log.Println("func (Duration) Add testcases successfully generated in " + outputPath)
+	log.Println("func (Instant) AddNano testcases successfully generated in " + outputPath)
 }

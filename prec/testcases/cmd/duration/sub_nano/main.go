@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Jumpaku/gkoku/internal/console"
-	"github.com/Jumpaku/gkoku/prec/testcases/cmd/duration"
+	"github.com/Jumpaku/gkoku/prec/testcases/cmd"
 	"golang.org/x/exp/rand"
 	"log"
 	"math"
@@ -31,11 +31,11 @@ func main() {
 	fmt.Fprintln(out, len(nanos)*len(nanos))
 	for _, sut := range nanos {
 		for _, inNano := range nanos {
-			sutSec, sutNano, ok := duration.Decompose(big.NewInt(sut))
+			sutSec, sutNano, ok := cmd.Decompose(big.NewInt(sut))
 			if !ok {
 				log.Panicf("%+v", sut)
 			}
-			wantSec, wantNano, _ := duration.Decompose((&big.Int{}).Sub(big.NewInt(sut), big.NewInt(inNano)))
+			wantSec, wantNano, _ := cmd.Decompose((&big.Int{}).Sub(big.NewInt(sut), big.NewInt(inNano)))
 
 			fmt.Fprintf(out, "%d %d %d %d %d\n", sutSec, sutNano, inNano, wantSec, wantNano)
 		}

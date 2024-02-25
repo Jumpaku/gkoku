@@ -39,7 +39,7 @@ func TestDuration_Abs(t *testing.T) {
 			t.Fatalf("failed to scan: %+v", err)
 		}
 		testcases[i] = testcase{
-			name: fmt.Sprintf("Abs(Seconds(%d,%d))", sutSec, sutNano),
+			name: fmt.Sprintf("Seconds(%d,%d).Abs()", sutSec, sutNano),
 			sut:  Seconds(sutSec, sutNano),
 			want: Seconds(wantSec, WantNano),
 		}
@@ -75,7 +75,7 @@ func TestDuration_Sign(t *testing.T) {
 			t.Fatalf("failed to scan: %+v", err)
 		}
 		testcases[i] = testcase{
-			name: fmt.Sprintf("Sign(Seconds(%d,%d))", sutSec, sutNano),
+			name: fmt.Sprintf("Seconds(%d,%d).Sign()", sutSec, sutNano),
 			sut:  Seconds(sutSec, sutNano),
 			want: want,
 		}
@@ -146,7 +146,7 @@ func TestDuration_Add(t *testing.T) {
 			t.Fatalf("failed to scan: %+v", err)
 		}
 		testcases[i] = testcase{
-			name: fmt.Sprintf("Add(Seconds(%d,%d),Seconds(%d,%d))", sutSec, sutNano, inSec, inNano),
+			name: fmt.Sprintf("Seconds(%d,%d).Add(Seconds(%d,%d))", sutSec, sutNano, inSec, inNano),
 			sut:  Seconds(sutSec, sutNano),
 			in:   Seconds(inSec, inNano),
 			want: Seconds(wantSec, WantNano),
@@ -183,7 +183,7 @@ func TestDuration_AddNano(t *testing.T) {
 			t.Fatalf("failed to scan: %+v", err)
 		}
 		testcases[i] = testcase{
-			name: fmt.Sprintf("AddNano(Seconds(%d,%d),%d)", sutSec, sutNano, inNano),
+			name: fmt.Sprintf("Seconds(%d,%d).AddNano(%d)", sutSec, sutNano, inNano),
 			sut:  Seconds(sutSec, sutNano),
 			in:   inNano,
 			want: Seconds(wantSec, WantNano),
@@ -220,7 +220,7 @@ func TestDuration_Sub(t *testing.T) {
 			t.Fatalf("failed to scan: %+v", err)
 		}
 		testcases[i] = testcase{
-			name: fmt.Sprintf("Sub(Seconds(%d,%d),Seconds(%d,%d))", sutSec, sutNano, inSec, inNano),
+			name: fmt.Sprintf("Seconds(%d,%d).Sub(Seconds(%d,%d))", sutSec, sutNano, inSec, inNano),
 			sut:  Seconds(sutSec, sutNano),
 			in:   Seconds(inSec, inNano),
 			want: Seconds(wantSec, WantNano),
@@ -257,7 +257,7 @@ func TestDuration_SubNano(t *testing.T) {
 			t.Fatalf("failed to scan: %+v", err)
 		}
 		testcases[i] = testcase{
-			name: fmt.Sprintf("SubNano(Seconds(%d,%d),%d)", sutSec, sutNano, inNano),
+			name: fmt.Sprintf("Seconds(%d,%d).SubNano(%d)", sutSec, sutNano, inNano),
 			sut:  Seconds(sutSec, sutNano),
 			in:   inNano,
 			want: Seconds(wantSec, WantNano),

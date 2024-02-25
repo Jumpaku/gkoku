@@ -1,4 +1,4 @@
-package duration
+package cmd
 
 import (
 	"math"

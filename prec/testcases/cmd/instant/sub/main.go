@@ -39,10 +39,10 @@ func main() {
 			if !ok {
 				log.Panicf("%+v", in)
 			}
-			wantSec, wantNano, _ := cmd.Decompose((&big.Int{}).Add(big.NewInt(sut), big.NewInt(in)))
+			wantSec, wantNano, _ := cmd.Decompose((&big.Int{}).Sub(big.NewInt(sut), big.NewInt(in)))
 
 			fmt.Fprintf(out, "%d %d %d %d %d %d\n", sutSec, sutNano, inSec, inNano, wantSec, wantNano)
 		}
 	}
-	log.Println("func (Duration) Add testcases successfully generated in " + outputPath)
+	log.Println("func (Instant) Sub testcases successfully generated in " + outputPath)
 }

@@ -18,26 +18,22 @@ func main() {
 	console.PanicIfError(err, "failed to create output file: %s", outputPath)
 	defer out.Close()
 
-	nanos := []int64{0, math.MinInt64, math.MinInt64 + 1, math.MaxInt64 - 1, math.MaxInt64, 1, -1, 1_000_000_000, -1_000_000_000, 1_000_000_001, -1_000_000_001, 999_999_999, -999_999_999}
+	seconds := []int64{0, math.MinInt64, math.MinInt64 + 1, math.MaxInt64 - 1, math.MaxInt64, 1, -1, 1_000_000_000, -1_000_000_000, 1_000_000_001, -1_000_000_001, 999_999_999, -999_999_999}
 	r := rand.New(rand.NewSource(1))
 	order := int64(10)
 	for i := 0; i < 18; i++ {
 		sign := r.Int63n(2)*2 - 1
-		nanos = append(nanos, sign*r.Int63n(order))
+		seconds = append(seconds, sign*r.Int63n(order))
 		order *= 10
 	}
 
-	fmt.Fprintln(out, len(nanos))
-	for _, nano := range nanos {
-		sutSec, sutNano, ok := cmd.Decompose(big.NewInt(nano))
+	fmt.Fprintln(out, len(seconds))
+	for _, in := range seconds {
+		wantSec, wantNano, ok := cmd.Decompose((&big.Int{}).Mul(big.NewInt(in), big.NewInt(1_000_000_000)))
 		if !ok {
-			log.Panicf("%+v", nano)
+			log.Panicf("%+v", in)
 		}
-		wantSec, wantNano, ok := cmd.Decompose((&big.Int{}).Neg(big.NewInt(nano)))
-		if !ok {
-			log.Panicf("%+v", nano)
-		}
-		fmt.Fprintf(out, "%d %d %d %d\n", sutSec, sutNano, wantSec, wantNano)
+		fmt.Fprintf(out, "%d %d %d %d\n", in, wantSec, wantNano)
 	}
 	log.Println("func (Duration) Abs testcases successfully generated in " + outputPath)
 }
