@@ -179,10 +179,6 @@ func (d Duration) greater(o Duration) bool {
 	return d.seconds > o.seconds
 }
 
-func (d Duration) equal(o Duration) bool {
-	return d.seconds == o.seconds && d.nano == o.nano
-}
-
 func (d Duration) State() State {
 	return d.state
 }

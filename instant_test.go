@@ -1,11 +1,13 @@
-package gkoku
+package gkoku_test
 
 import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
 	"testing"
+
+	. "github.com/Jumpaku/gkoku"
+	"github.com/Jumpaku/gkoku/internal/tests/assert"
 )
 
 func equalInstant(t *testing.T, want Instant, got Instant) {
@@ -409,7 +411,7 @@ func TestInstant_State_OK(t *testing.T) {
 		},
 		{
 			name:      "ng",
-			sut:       Instant{unixSeconds: Duration{state: StateOverflow}},
+			sut:       NGInstant(),
 			wantOK:    false,
 			wantState: StateOverflow,
 		},

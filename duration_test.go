@@ -1,9 +1,10 @@
-package gkoku
+package gkoku_test
 
 import (
 	"bytes"
 	_ "embed"
 	"fmt"
+	. "github.com/Jumpaku/gkoku"
 	"github.com/Jumpaku/gkoku/internal/tests/assert"
 	"testing"
 )
@@ -362,7 +363,7 @@ func TestDuration_OK(t *testing.T) {
 		},
 		{
 			name: "ng",
-			sut:  Duration{state: StateOverflow},
+			sut:  NGDuration(),
 			want: false,
 		},
 	}

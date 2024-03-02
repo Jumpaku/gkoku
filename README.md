@@ -41,7 +41,7 @@ Note that you should specify a datetime in the future with not an offset but a t
 
 `DateTimePeriod` represents the amount of the difference between two datetime.
 
-## Conversion 
+## Conversion
 
 `OffsetDateTime` can always be converted to `Instant`.
 With an offset, `Instant` can be converted to `OffsetDateTime`.

@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku/internal/console"
-	"github.com/Jumpaku/gkoku/testcases/cmd"
-	"golang.org/x/exp/rand"
 	"log"
 	"math"
 	"math/big"
+	"math/rand"
 	"os"
+
+	"github.com/Jumpaku/gkoku/internal/console"
+	"github.com/Jumpaku/gkoku/testcases/cmd"
 )
 
 func main() {
@@ -33,7 +34,7 @@ func main() {
 		if !ok {
 			log.Panicf("%+v", in)
 		}
-		fmt.Fprintf(out, "%d %d %d %d\n", in, wantSec, wantNano)
+		fmt.Fprintf(out, "%d %d %d\n", in, wantSec, wantNano)
 	}
 	log.Println("func (Duration) Abs testcases successfully generated in " + outputPath)
 }

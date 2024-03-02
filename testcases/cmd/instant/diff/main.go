@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/Jumpaku/gkoku/internal/console"
 	"github.com/Jumpaku/gkoku/testcases/cmd"
-	"golang.org/x/exp/rand"
 	"log"
 	"math"
 	"math/big"
+	"math/rand"
 	"os"
 )
 
