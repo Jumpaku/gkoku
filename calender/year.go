@@ -10,11 +10,6 @@ var _ interface {
 	Iter() YearIterator
 } = Year(0)
 
-const (
-	YearMin Year = -9999
-	YearMax Year = 9999
-)
-
 func (y Year) IsLeap() bool {
 	switch {
 	case y%400 == 0:
