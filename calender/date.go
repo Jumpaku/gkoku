@@ -243,38 +243,39 @@ func daysFromYyyyDdd(year int, dayOfYear int) (days int64) {
 }
 
 func validateYyyyMmDd(year, month, dayOfMonth int) error {
-	if YearMin <= Year(year) && Year(year) <= YearMax {
-		return fmt.Errorf("year must be in [%d, %d]: %d", YearMin, YearMax, year)
-	}
-	if MonthJanuary <= Month(month) && Month(month) <= MonthDecember {
+	//if YearMin <= Year(year) && Year(year) <= YearMax {
+	//	return fmt.Errorf("year must be in [%d, %d]: %d", YearMin, YearMax, year)
+	//}
+	if !(MonthJanuary <= Month(month) && Month(month) <= MonthDecember) {
 		return fmt.Errorf("month must be in [%d, %d]: %d", MonthJanuary, MonthDecember, month)
 	}
 	lastDayOfMonth := YearMonthOf(Year(year), Month(month)).Days()
-	if 1 <= dayOfMonth && dayOfMonth <= lastDayOfMonth {
+	if !(1 <= dayOfMonth && dayOfMonth <= lastDayOfMonth) {
 		return fmt.Errorf("day of month must be in [%d, %d]: %d", 1, lastDayOfMonth, dayOfMonth)
 	}
 	return nil
 }
 
 func validateYyyyWwD(year, week, dayOfWeek int) error {
-	if YearMin <= Year(year) && Year(year) <= YearMax {
-		return fmt.Errorf("year must be in [%d, %d]: %d", YearMin, YearMax, year)
+	//if YearMin <= Year(year) && Year(year) <= YearMax {
+	//	return fmt.Errorf("year must be in [%d, %d]: %d", YearMin, YearMax, year)
+	//}
+	if !Year(year).ContainsWeek(week) {
+		return fmt.Errorf("month must be in [%d, %d]: %d", 1, Year(year).Weeks(), week)
 	}
-	if 1 <= week && week <= 52 {
-		return fmt.Errorf("month must be in [%d, %d]: %d", 1, 52, week)
-	}
-	if DayOfWeekMonday <= DayOfWeek(dayOfWeek) && DayOfWeek(dayOfWeek) <= DayOfWeekSunday {
+
+	if !(DayOfWeekMonday <= DayOfWeek(dayOfWeek) && DayOfWeek(dayOfWeek) <= DayOfWeekSunday) {
 		return fmt.Errorf("day of month must be in [%d, %d]: %d", DayOfWeekMonday, DayOfWeekSunday, dayOfWeek)
 	}
 	return nil
 }
 
 func validateYyyyDdd(year, dayOfYear int) error {
-	if YearMin <= Year(year) && Year(year) <= YearMax {
-		return fmt.Errorf("year must be in [%d, %d]: %d", YearMin, YearMax, year)
-	}
+	//if YearMin <= Year(year) && Year(year) <= YearMax {
+	//	return fmt.Errorf("year must be in [%d, %d]: %d", YearMin, YearMax, year)
+	//}
 	lastDayOfYear := Year(year).Days()
-	if 1 <= dayOfYear && dayOfYear <= lastDayOfYear {
+	if !(1 <= dayOfYear && dayOfYear <= lastDayOfYear) {
 		return fmt.Errorf("month must be in [%d, %d]: %d", 1, lastDayOfYear, dayOfYear)
 	}
 	return nil

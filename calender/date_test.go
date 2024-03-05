@@ -1,9 +1,10 @@
-package calender
+package calender_test
 
 import (
 	"bytes"
 	_ "embed"
 	"fmt"
+	. "github.com/Jumpaku/gkoku/calender"
 	"github.com/Jumpaku/gkoku/internal/tests"
 	"github.com/Jumpaku/gkoku/internal/tests/assert"
 	"testing"
