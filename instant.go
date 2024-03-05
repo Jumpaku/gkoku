@@ -8,7 +8,7 @@ func Unix(unixSeconds int64, nano int64) Instant {
 	return Instant{unixSeconds: Seconds(unixSeconds, nano)}
 }
 
-type IInstant interface {
+var _ interface {
 	Unix() (seconds int64, nano int64)
 	Add(o Duration) Instant
 	AddNano(nanoseconds int64) Instant
@@ -21,9 +21,7 @@ type IInstant interface {
 	Equal(o Instant) bool
 	State() State
 	OK() bool
-}
-
-var _ IInstant = Instant{}
+} = Instant{}
 
 func (i Instant) Unix() (seconds int64, nano int64) {
 	return i.unixSeconds.Seconds()

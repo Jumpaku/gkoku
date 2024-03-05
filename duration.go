@@ -18,20 +18,6 @@ const (
 	SecondsPerDay    = SecondsPerHour * HoursPerDay
 )
 
-type IDuration interface {
-	Seconds() (seconds int64, nano int64)
-	Add(o Duration) Duration
-	AddNano(nanoseconds int64) Duration
-	Sub(o Duration) Duration
-	SubNano(nanoseconds int64) Duration
-	Abs() Duration
-	Sign() int
-	Neg() Duration
-	Cmp(o Duration) int
-	State() State
-	OK() bool
-}
-
 type Duration struct {
 	state   State
 	seconds int64
@@ -70,7 +56,19 @@ func Nanoseconds(nanoseconds int64) (d Duration) {
 	return
 }
 
-var _ IDuration = Duration{}
+var _ interface {
+	Seconds() (seconds int64, nano int64)
+	Add(o Duration) Duration
+	AddNano(nanoseconds int64) Duration
+	Sub(o Duration) Duration
+	SubNano(nanoseconds int64) Duration
+	Abs() Duration
+	Sign() int
+	Neg() Duration
+	Cmp(o Duration) int
+	State() State
+	OK() bool
+} = Duration{}
 
 func (d Duration) Seconds() (seconds int64, nano int64) {
 	return d.seconds, int64(d.nano)
