@@ -16,7 +16,11 @@ var _ interface {
 	YyyyMmDd() (year int, month Month, dayOfMonth int)
 	YyyyWwD() (year int, week int, dayOfWeek DayOfWeek)
 	YyyyDdd() (year int, dayOfYear int)
-	Iter() DateIterator
+	Add(days int) Date
+	Sub(days int) Date
+	Year() Year
+	YearMonth() YearMonth
+	YearWeek() YearWeek
 	DaysUntil(endExclusive Date) int64
 	WholeMonthsUntil(endExclusive Date) int64
 	WholeWeeksUntil(endExclusive Date) int64
@@ -30,7 +34,7 @@ var _ interface {
 func YyyyMmDd(year int, month Month, dayOfMonth int) Date {
 	//assert.Params(YearMin <= Year(year) && Year(year) <= YearMax, "year must be in [%d, %d]: %d", YearMin, YearMax, year)
 	assert.Params(MonthJanuary <= month && month <= MonthDecember, "month must be in [%d, %d]: %d", MonthJanuary, MonthDecember, month)
-	lastDayOfMonth := YearMonthOf(Year(year), month).Days()
+	lastDayOfMonth := YearMonthOf(year, month).Days()
 	assert.Params(1 <= dayOfMonth && dayOfMonth <= lastDayOfMonth, "dayOfMonth must be in [%d, %d]: %d", 1, lastDayOfMonth, dayOfMonth)
 	return Date{days: daysFromYyyyMmDd(year, month, dayOfMonth)}
 }
@@ -65,54 +69,21 @@ func (d Date) YyyyDdd() (year int, dayOfYear int) {
 	return daysToYyyyDdd(d.days)
 }
 
-func (d Date) DaysUntil(endExclusive Date) int64 {
-	return endExclusive.days - d.days
+func (d Date) Year() Year {
+	y, _ := d.YyyyDdd()
+	return Year(y)
 }
 
-func (d Date) WholeMonthsUntil(endExclusive Date) int64 {
-	if d.Equal(endExclusive) {
-		return 0
-	}
-
-	by, bm, bd := d.YyyyMmDd()
-	ey, em, ed := endExclusive.YyyyMmDd()
-	bym := YearMonthOf(Year(by), bm)
-	eym := YearMonthOf(Year(ey), em)
-
-	if d.After(endExclusive) {
-		wm := eym.MonthsUntil(bym)
-		if bd < ed {
-			return -(wm - 1)
-		}
-		return -wm
-	} else {
-		wm := bym.MonthsUntil(eym)
-		if ed < bd {
-			return wm - 1
-		}
-		return wm
-	}
+func (d Date) YearMonth() YearMonth {
+	y, m, _ := d.YyyyMmDd()
+	return YearMonthOf(y, m)
 }
 
-func (d Date) WholeWeeksUntil(endExclusive Date) int64 {
-	if d.After(endExclusive) {
-		return -(endExclusive.DaysUntil(d) / 7)
-	} else {
-		return d.DaysUntil(endExclusive) / 7
-	}
+func (d Date) YearWeek() YearWeek {
+	y, w, _ := d.YyyyWwD()
+	return YearWeekOf(y, w)
 }
 
-func (d Date) WholeYearsUntil(endExclusive Date) int64 {
-	if d.After(endExclusive) {
-		return -(endExclusive.WholeMonthsUntil(d) / 12)
-	} else {
-		return d.WholeMonthsUntil(endExclusive) / 12
-	}
-}
-
-func (d Date) Iter() DateIterator {
-	return nil
-}
 func (d Date) Cmp(other Date) int {
 	return cmp.Compare(d.days, other.days)
 }
@@ -127,6 +98,61 @@ func (d Date) Before(other Date) bool {
 
 func (d Date) After(other Date) bool {
 	return d.days > other.days
+}
+
+func (d Date) Add(days int) Date {
+	return Date{d.days + int64(days)}
+}
+
+func (d Date) Sub(days int) Date {
+	return Date{d.days - int64(days)}
+
+}
+
+func (d Date) DaysUntil(endExclusive Date) int64 {
+	return endExclusive.days - d.days
+}
+
+func (d Date) WholeMonthsUntil(endExclusive Date) int64 {
+	by, bm, bd := d.YyyyMmDd()
+	ey, em, ed := endExclusive.YyyyMmDd()
+	wm := YearMonthOf(by, bm).MonthsUntil(YearMonthOf(ey, em))
+
+	if d.After(endExclusive) && bd < ed {
+		return wm + 1
+	}
+	if d.Before(endExclusive) && bd > ed {
+		return wm - 1
+	}
+	return wm
+}
+
+func (d Date) WholeWeeksUntil(endExclusive Date) int64 {
+	by, bw, bd := d.YyyyWwD()
+	ey, ew, ed := endExclusive.YyyyWwD()
+	ww := YearWeekOf(by, bw).WeeksUntil(YearWeekOf(ey, ew))
+
+	if d.After(endExclusive) && bd < ed {
+		return ww + 1
+	}
+	if d.Before(endExclusive) && bd > ed {
+		return ww - 1
+	}
+	return ww
+}
+
+func (d Date) WholeYearsUntil(endExclusive Date) int64 {
+	by, bd := d.YyyyDdd()
+	ey, ed := endExclusive.YyyyDdd()
+	wy := int64(Year(ey) - Year(by))
+
+	if d.After(endExclusive) && bd < ed {
+		return wy + 1
+	}
+	if d.Before(endExclusive) && bd > ed {
+		return wy - 1
+	}
+	return wy
 }
 
 func toEpochDays(year int, month Month, day int) int64 {
@@ -249,7 +275,7 @@ func validateYyyyMmDd(year, month, dayOfMonth int) error {
 	if !(MonthJanuary <= Month(month) && Month(month) <= MonthDecember) {
 		return fmt.Errorf("month must be in [%d, %d]: %d", MonthJanuary, MonthDecember, month)
 	}
-	lastDayOfMonth := YearMonthOf(Year(year), Month(month)).Days()
+	lastDayOfMonth := YearMonthOf(year, Month(month)).Days()
 	if !(1 <= dayOfMonth && dayOfMonth <= lastDayOfMonth) {
 		return fmt.Errorf("day of month must be in [%d, %d]: %d", 1, lastDayOfMonth, dayOfMonth)
 	}

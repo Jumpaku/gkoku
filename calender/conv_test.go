@@ -11,14 +11,14 @@ import (
 )
 
 //go:embed testcases/testdata/date_conv.txt
-var testdataConv []byte
+var testdataDateConv []byte
 
 func TestParseDate(t *testing.T) {
 	type testcase struct {
 		sutYear, sutMonth, sutDay int
 	}
 
-	s := tests.Scanner{Data: bytes.NewBuffer(testdataConv)}
+	s := tests.Scanner{Data: bytes.NewBuffer(testdataDateConv)}
 	nTestcases := s.ScanInt()
 	var testcases []testcase
 	for i := 0; i < nTestcases; i++ {
@@ -61,6 +61,38 @@ func TestParseDate(t *testing.T) {
 				assert.Equal(t, wantM, gotM)
 				assert.Equal(t, wantD, gotD)
 			}
+		})
+	}
+}
+
+//go:embed testcases/testdata/yearmonth_conv.txt
+var testdataConvYearMonth []byte
+
+func TestParseYearMonth(t *testing.T) {
+	type testcase struct {
+		sutYear, sutMonth int
+	}
+
+	s := tests.Scanner{Data: bytes.NewBuffer(testdataConvYearMonth)}
+	nTestcases := s.ScanInt()
+	var testcases []testcase
+	for i := 0; i < nTestcases; i++ {
+		ints := s.ScanInts(2)
+		testcases = append(testcases, testcase{
+			sutYear: ints[0], sutMonth: ints[1],
+		})
+	}
+
+	for _, testcase := range testcases {
+		t.Run(fmt.Sprintf("%d-%d", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
+			got := FormatYearMonth(sut)
+			est, err := ParseYearMonth(got)
+			assert.Nil(t, err)
+			wantY, wantM := sut.YyyyMm()
+			gotY, gotM := est.YyyyMm()
+			assert.Equal(t, wantY, gotY)
+			assert.Equal(t, wantM, gotM)
 		})
 	}
 }

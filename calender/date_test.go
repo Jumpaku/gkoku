@@ -33,10 +33,27 @@ func Test_OfYyyyMmDd(t *testing.T) {
 	for _, testcase := range testcases {
 		t.Run(fmt.Sprintf("%d-%d-%d", testcase.wantYear, testcase.wantMonth, testcase.wantDay), func(t *testing.T) {
 			sut := YyyyMmDd(testcase.sutYear, Month(testcase.sutMonth), testcase.sutDay)
-			gotYear, gotMonth, gotDay := sut.YyyyMmDd()
-			assert.Equal(t, testcase.wantYear, gotYear)
-			assert.Equal(t, testcase.wantMonth, int(gotMonth))
-			assert.Equal(t, testcase.wantDay, gotDay)
+			{
+				gotYear, gotMonth, gotDay := sut.YyyyMmDd()
+				assert.Equal(t, testcase.wantYear, gotYear)
+				assert.Equal(t, testcase.wantMonth, int(gotMonth))
+				assert.Equal(t, testcase.wantDay, gotDay)
+			}
+			{
+				gotYear, gotMonth := sut.YearMonth().YyyyMm()
+				assert.Equal(t, testcase.wantYear, gotYear)
+				assert.Equal(t, testcase.wantMonth, int(gotMonth))
+			}
+			{
+				wantYear, wantWeek, _ := sut.YyyyWwD()
+				gotYear, gotWeek := sut.YearWeek().YyyyWw()
+				assert.Equal(t, wantYear, gotYear)
+				assert.Equal(t, wantWeek, gotWeek)
+			}
+			{
+				gotYear := sut.Year()
+				assert.Equal(t, Year(testcase.wantYear), gotYear)
+			}
 		})
 	}
 }
@@ -119,16 +136,16 @@ func Test_OfYyyyDdd(t *testing.T) {
 }
 
 //go:embed testcases/testdata/date_compare.txt
-var testdataCompare []byte
+var testdataDateCompare []byte
 
-func Test_Compare(t *testing.T) {
+func TestDate_Compare(t *testing.T) {
 	type testcase struct {
 		sutYear, sutMonth, sutDay int
 		inYear, inMonth, inDay    int
 		want                      int
 	}
 
-	s := tests.Scanner{Data: bytes.NewBuffer(testdataCompare)}
+	s := tests.Scanner{Data: bytes.NewBuffer(testdataDateCompare)}
 	nTestcases := s.ScanInt()
 	var testcases []testcase
 	for i := 0; i < nTestcases; i++ {
