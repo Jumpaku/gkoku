@@ -9,7 +9,10 @@ package testcases
 
 //go:generate go run ./cmd/yearmonth/yyyymm/main.go testdata/yearmonth_yyyymm.txt
 //go:generate go run ./cmd/yearmonth/compare/main.go testdata/yearmonth_compare.txt
-//go:generate go run ./cmd/yearmonth/conv/main.go testdata/yearmonth_conv.txt
 //go:generate go run ./cmd/yearmonth/day/main.go testdata/yearmonth_day.txt
+//go:generate go run ./cmd/yearmonth/until/main.go testdata/yearmonth_until.txt
+//go:generate go run ./cmd/yearmonth/addsub/main.go testdata/yearmonth_addsub.txt
 
 //go:generate go run ./cmd/date/conv/main.go testdata/date_conv.txt
+//go:generate go run ./cmd/yearmonth/conv/main.go testdata/yearmonth_conv.txt
+//go:generate go run ./cmd/yearweek/conv/main.go testdata/yearweek_conv.txt
