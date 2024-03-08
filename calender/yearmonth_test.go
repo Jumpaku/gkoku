@@ -45,72 +45,94 @@ func TestYearMonth_YyyyMm(t *testing.T) {
 //go:embed testcases/testdata/yearmonth_day.txt
 var testdataYearMonthDay []byte
 
-func TestYearMonth_Day(t *testing.T) {
-	type testcase struct {
-		sutYear, sutMonth int
-		lastDay           int
-	}
+type testcaseYearMonthDay struct {
+	sutYear, sutMonth int
+	lastDay           int
+}
 
+var testcasesYearMonthDay = func() (testcases []testcaseYearMonthDay) {
 	s := tests.Scanner{Data: bytes.NewBuffer(testdataYearMonthDay)}
 	nTestcases := s.ScanInt()
-	var testcases []testcase
 	for i := 0; i < nTestcases; i++ {
 		ints := s.ScanInts(3)
-		testcases = append(testcases, testcase{
+		testcases = append(testcases, testcaseYearMonthDay{
 			sutYear: ints[0], sutMonth: ints[1],
 			lastDay: ints[2],
 		})
 	}
+	return testcases
+}()
 
-	for _, testcase := range testcases {
+func TestYearMonth_Days(t *testing.T) {
+	for _, testcase := range testcasesYearMonthDay {
 		sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
 		t.Run(fmt.Sprintf("%d-%d", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
 			{
 				got := sut.Days()
 				assert.Equal(t, testcase.lastDay, got)
 			}
-			{
-				got := sut.ContainsDay(-1)
-				assert.Equal(t, false, got)
-			}
-			{
-				got := sut.ContainsDay(0)
-				assert.Equal(t, false, got)
-			}
-			{
-				got := sut.ContainsDay(1)
-				assert.Equal(t, true, got)
-			}
-			{
-				got := sut.ContainsDay(28)
-				assert.Equal(t, true, got)
-			}
-			{
-				got := sut.ContainsDay(29)
-				assert.Equal(t, 29 <= testcase.lastDay, got)
-			}
-			{
-				got := sut.ContainsDay(30)
-				assert.Equal(t, 30 <= testcase.lastDay, got)
-			}
-			{
-				got := sut.ContainsDay(31)
-				assert.Equal(t, 31 <= testcase.lastDay, got)
-			}
-			{
-				got := sut.ContainsDay(32)
-				assert.Equal(t, false, got)
-			}
 		})
 	}
 }
 
-func TestYearMonth_MonthsUntil(t *testing.T) {
-
+func TestYearMonth_ContainsDay(t *testing.T) {
+	for _, testcase := range testcasesYearMonthDay {
+		sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
+		t.Run(fmt.Sprintf("whether %d-%d contains -1", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(-1)
+			assert.Equal(t, false, got)
+		})
+		t.Run(fmt.Sprintf("whether %d-%d contains 0", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(0)
+			assert.Equal(t, false, got)
+		})
+		t.Run(fmt.Sprintf("whether %d-%d contains 1", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(1)
+			assert.Equal(t, true, got)
+		})
+		t.Run(fmt.Sprintf("whether %d-%d contains 28", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(28)
+			assert.Equal(t, true, got)
+		})
+		t.Run(fmt.Sprintf("whether %d-%d contains 29", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(29)
+			assert.Equal(t, 29 <= testcase.lastDay, got)
+		})
+		t.Run(fmt.Sprintf("whether %d-%d contains 30", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(30)
+			assert.Equal(t, 30 <= testcase.lastDay, got)
+		})
+		t.Run(fmt.Sprintf("whether %d-%d contains 31", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(31)
+			assert.Equal(t, 31 <= testcase.lastDay, got)
+		})
+		t.Run(fmt.Sprintf("whether %d-%d contains 32", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.ContainsDay(32)
+			assert.Equal(t, false, got)
+		})
+	}
 }
 
-func TestYearMonth_WholeYearsUntil(t *testing.T) {
+func TestYearMonth_FirstDate(t *testing.T) {
+	for _, testcase := range testcasesYearMonthDay {
+		sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
+		t.Run(fmt.Sprintf("%d-%d", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.FirstDate()
+			want := YyyyMmDd(testcase.sutYear, Month(testcase.sutMonth), 1)
+			AssertEqualDate(t, want, got)
+		})
+	}
+}
 
+func TestYearMonth_LastDate(t *testing.T) {
+	for _, testcase := range testcasesYearMonthDay {
+		sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
+		t.Run(fmt.Sprintf("%d-%d", testcase.sutYear, testcase.sutMonth), func(t *testing.T) {
+			got := sut.LastDate()
+			want := YyyyMmDd(testcase.sutYear, Month(testcase.sutMonth), sut.Days())
+			AssertEqualDate(t, want, got)
+		})
+	}
 }
 
 //go:embed testcases/testdata/yearmonth_compare.txt

@@ -141,45 +141,47 @@ func TestDate_WholeYearsUntil(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			sut := YyyyMmDd(testcase.sutYear, Month(testcase.sutMonth), testcase.sutDay)
 			in := YyyyMmDd(testcase.inYear, Month(testcase.inMonth), testcase.inDay)
+			sutTime := ToTime(sut.YyyyMmDd())
+			inTime := ToTime(in.YyyyMmDd())
 			until := sut.WholeYearsUntil(in)
 			switch {
 			case until == 0:
-				est2 := ToTime(sut.YyyyMmDd()).AddDate(int(until+1), 0, 0)
-				if !est2.After(ToTime(in.YyyyMmDd())) {
+				est2 := sutTime.AddDate(int(until+1), 0, 0)
+				if !est2.After(inTime) {
 					t.Errorf(`<sut> + <until> + 1y must be after <in>: got %d`, until)
 				}
 
-				est := ToTime(sut.YyyyMmDd()).AddDate(int(until-1), 0, 0)
+				est := sutTime.AddDate(int(until-1), 0, 0)
 				if _, _, sutDay := sut.YyyyMmDd(); est.Day() != sutDay {
 					est = est.AddDate(0, 0, -est.Day())
 				}
-				if !est.Before(ToTime(in.YyyyMmDd())) {
+				if !est.Before(inTime) {
 					t.Errorf(`<sut> + <until> - 1y must be before <in>: got %d`, until)
 				}
 			case until >= 0:
-				est := ToTime(sut.YyyyMmDd()).AddDate(int(until), 0, 0)
+				est := sutTime.AddDate(int(until), 0, 0)
 				if _, _, sutDay := sut.YyyyMmDd(); est.Day() != sutDay {
 					est = est.AddDate(0, 0, -est.Day())
 				}
-				if est.After(ToTime(in.YyyyMmDd())) {
+				if est.After(inTime) {
 					t.Errorf(`<sut> + <until> must be not after <in>: got %d`, until)
 				}
 
-				est2 := ToTime(sut.YyyyMmDd()).AddDate(int(until+1), 0, 0)
-				if !est2.After(ToTime(in.YyyyMmDd())) {
+				est2 := sutTime.AddDate(int(until+1), 0, 0)
+				if !est2.After(inTime) {
 					t.Errorf(`<sut> + <until> + 1y must be after <in>: got %d`, until)
 				}
 			case until <= 0:
-				est := ToTime(sut.YyyyMmDd()).AddDate(int(until), 0, 0)
-				if est.Before(ToTime(in.YyyyMmDd())) {
+				est := sutTime.AddDate(int(until), 0, 0)
+				if est.Before(inTime) {
 					t.Errorf(`<sut> + <until> must be not before <in>: got %d`, until)
 				}
 
-				est2 := ToTime(sut.YyyyMmDd()).AddDate(int(until-1), 0, 0)
+				est2 := sutTime.AddDate(int(until-1), 0, 0)
 				if _, _, sutDay := sut.YyyyMmDd(); est2.Day() != sutDay {
 					est2 = est2.AddDate(0, 0, -est2.Day())
 				}
-				if !est2.Before(ToTime(in.YyyyMmDd())) {
+				if !est2.Before(inTime) {
 					t.Errorf(`<sut> + <until> - 1y must be before <in>: got %d`, until)
 				}
 			}
