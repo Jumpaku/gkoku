@@ -13,7 +13,7 @@ import (
 //go:embed testcases/testdata/date_yyyymmdd.txt
 var testdataYyyyMmDd []byte
 
-func Test_OfYyyyMmDd(t *testing.T) {
+func Test_YyyyMmDd(t *testing.T) {
 	type testcase struct {
 		sutYear, sutMonth, sutDay    int
 		wantYear, wantMonth, wantDay int
@@ -45,12 +45,6 @@ func Test_OfYyyyMmDd(t *testing.T) {
 				assert.Equal(t, testcase.wantMonth, int(gotMonth))
 			}
 			{
-				wantYear, wantWeek, _ := sut.YyyyWwD()
-				gotYear, gotWeek := sut.YearWeek().YyyyWw()
-				assert.Equal(t, wantYear, gotYear)
-				assert.Equal(t, wantWeek, gotWeek)
-			}
-			{
 				gotYear := sut.Year()
 				assert.Equal(t, Year(testcase.wantYear), gotYear)
 			}
@@ -61,7 +55,7 @@ func Test_OfYyyyMmDd(t *testing.T) {
 //go:embed testcases/testdata/date_yyyywwd.txt
 var testdataYyyyWwD []byte
 
-func Test_OfYyyyWwD(t *testing.T) {
+func Test_YyyyWwD(t *testing.T) {
 	type testcase struct {
 		sutYear, sutWeek, sutDay     int
 		wantYear, wantMonth, wantDay int
@@ -92,6 +86,16 @@ func Test_OfYyyyWwD(t *testing.T) {
 				assert.Equal(t, testcase.sutYear, gotYear)
 				assert.Equal(t, testcase.sutWeek, gotWeek)
 				assert.Equal(t, testcase.sutDay, int(gotDay))
+			}
+			{
+				wantYear, wantWeek, _ := sut.YyyyWwD()
+				gotYear, gotWeek := sut.YearWeek().YyyyWw()
+				assert.Equal(t, wantYear, gotYear)
+				assert.Equal(t, wantWeek, gotWeek)
+			}
+			{
+				gotYear := sut.Year()
+				assert.Equal(t, Year(testcase.wantYear), gotYear)
 			}
 		})
 	}
@@ -130,6 +134,10 @@ func Test_OfYyyyDdd(t *testing.T) {
 				gotYear, gotDay := sut.YyyyDdd()
 				assert.Equal(t, testcase.sutYear, gotYear)
 				assert.Equal(t, testcase.sutDay, gotDay)
+			}
+			{
+				gotYear := sut.Year()
+				assert.Equal(t, Year(testcase.wantYear), gotYear)
 			}
 		})
 	}

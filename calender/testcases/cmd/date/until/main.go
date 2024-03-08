@@ -97,5 +97,5 @@ func main() {
 		fmt.Fprintf(out, "%d %d %d %d %d %d\n",
 			t.sut.Year(), t.sut.Month(), t.sut.Day(), t.in.Year(), t.in.Month(), t.in.Day())
 	}
-	log.Println("Date comparison testcases successfully generated in " + outputPath)
+	log.Println("Date until testcases successfully generated in " + outputPath)
 }

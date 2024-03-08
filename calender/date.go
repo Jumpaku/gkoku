@@ -142,16 +142,7 @@ func (d Date) WholeWeeksUntil(endExclusive Date) int64 {
 }
 
 func (d Date) WholeYearsUntil(endExclusive Date) int64 {
-	by, bd := d.YyyyDdd()
-	ey, ed := endExclusive.YyyyDdd()
-	wy := int64(Year(ey) - Year(by))
-
-	if d.After(endExclusive) && bd < ed {
-		return wy + 1
-	}
-	if d.Before(endExclusive) && bd > ed {
-		return wy - 1
-	}
+	wy, _, _ := exact.DivTrunc(d.WholeMonthsUntil(endExclusive), 12)
 	return wy
 }
 
