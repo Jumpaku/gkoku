@@ -10,6 +10,7 @@ const (
 )
 
 const NanosPerSecond = 1_000_000_000
+
 const (
 	SecondsPerMinute = 60
 	MinutesPerHour   = 60

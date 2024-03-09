@@ -5,7 +5,7 @@ go 1.21.5
 require (
 	github.com/Jumpaku/go-assert v1.0.0
 	github.com/Jumpaku/go-tzot v0.0.0-20240221224759-ea35f5bf1a2f
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 )
 
 require (

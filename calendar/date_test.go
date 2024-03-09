@@ -392,7 +392,7 @@ var testcasesDateAddSub = func() (testcases []testcaseDateAddSub) {
 
 func TestDate_Add(t *testing.T) {
 	for _, testcase := range testcasesDateAddSub {
-		name := fmt.Sprintf("(%d-%d-%d)+%dd", testcase.sutYear, (testcase.sutMonth), testcase.sutDay, testcase.in)
+		name := fmt.Sprintf("(%d-%d-%d)+%dd", testcase.sutYear, testcase.sutMonth, testcase.sutDay, testcase.in)
 		t.Run(name, func(t *testing.T) {
 			sut := YyyyMmDd(testcase.sutYear, Month(testcase.sutMonth), testcase.sutDay)
 			got := sut.Add(testcase.in)
@@ -404,7 +404,7 @@ func TestDate_Add(t *testing.T) {
 
 func TestDate_Sub(t *testing.T) {
 	for _, testcase := range testcasesDateAddSub {
-		name := fmt.Sprintf("(%d-%d-%d)-%dd", testcase.sutYear, (testcase.sutMonth), testcase.sutDay, testcase.in)
+		name := fmt.Sprintf("(%d-%d-%d)-%dd", testcase.sutYear, testcase.sutMonth, testcase.sutDay, testcase.in)
 		t.Run(name, func(t *testing.T) {
 			sut := YyyyMmDd(testcase.sutYear, Month(testcase.sutMonth), testcase.sutDay)
 			got := sut.Sub(testcase.in)
