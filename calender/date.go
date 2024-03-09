@@ -32,7 +32,6 @@ var _ interface {
 } = Date{}
 
 func YyyyMmDd(year int, month Month, dayOfMonth int) Date {
-	//assert.Params(YearMin <= Year(year) && Year(year) <= YearMax, "year must be in [%d, %d]: %d", YearMin, YearMax, year)
 	assert.Params(MonthJanuary <= month && month <= MonthDecember, "month must be in [%d, %d]: %d", MonthJanuary, MonthDecember, month)
 	lastDayOfMonth := YearMonthOf(year, month).Days()
 	assert.Params(1 <= dayOfMonth && dayOfMonth <= lastDayOfMonth, "dayOfMonth must be in [%d, %d]: %d", 1, lastDayOfMonth, dayOfMonth)
@@ -40,7 +39,6 @@ func YyyyMmDd(year int, month Month, dayOfMonth int) Date {
 }
 
 func YyyyWwD(year int, week int, dayOfWeek DayOfWeek) Date {
-	//assert.Params(YearMin <= Year(year) && Year(year) <= YearMax, "year must be in [%d, %d]: %d", YearMin, YearMax, year)
 	assert.Params(DayOfWeekMonday <= dayOfWeek && dayOfWeek <= DayOfWeekSunday, "dayOfWeek must be in [%d, %d]: %d", DayOfWeekMonday, DayOfWeekSunday, dayOfWeek)
 	assert.Params(1 <= week && week <= 53, "week must be in [%d, %d]: %d", 1, 53, week)
 	days := daysFromYyyyWwD(year, week, dayOfWeek)
@@ -51,7 +49,6 @@ func YyyyWwD(year int, week int, dayOfWeek DayOfWeek) Date {
 	return Date{days: days}
 }
 func YyyyDdd(year int, dayOfYear int) Date {
-	//assert.Params(YearMin <= Year(year) && Year(year) <= YearMax, "year must be in [%d, %d]: %d", YearMin, YearMax, year)
 	lastDayOfYear := Year(year).Days()
 	assert.Params(1 <= dayOfYear && dayOfYear <= lastDayOfYear, "day must be in [%d, %d]: %d", 1, lastDayOfYear, dayOfYear)
 	return Date{days: daysFromYyyyDdd(year, dayOfYear)}
