@@ -1,7 +1,5 @@
 package calender
 
-import "github.com/Jumpaku/gkoku/exact"
-
 type YearWeek struct {
 	year int
 	week int
@@ -13,14 +11,10 @@ func YearWeekOf(year int, week int) YearWeek {
 
 var _ interface {
 	YyyyWw() (year int, week int)
-	Add(weeks int) YearWeek
-	Sub(weeks int) YearWeek
 	Year() Year
 	Date(dayOfWeek DayOfWeek) Date
 	FirstDate() Date
 	LastDate() Date
-	WeeksUntil(endExclusive YearWeek) int64
-	WholeYearsUntil(endExclusive YearWeek) int64
 	Cmp(other YearWeek) int
 	Equal(other YearWeek) bool
 	Before(other YearWeek) bool
@@ -74,33 +68,4 @@ func (yw YearWeek) After(other YearWeek) bool {
 		return yw.week > other.week
 	}
 	return yw.year > other.year
-}
-
-func (yw YearWeek) Add(weeks int) YearWeek {
-	return yw.Date(DayOfWeekMonday).Add(7 * weeks).YearWeek()
-}
-
-func (yw YearWeek) Sub(weeks int) YearWeek {
-	return yw.Date(DayOfWeekMonday).Sub(7 * weeks).YearWeek()
-}
-
-func (yw YearWeek) WeeksUntil(endExclusive YearWeek) int64 {
-	bd := daysFromYyyyWwD(yw.year, yw.week, DayOfWeekMonday)
-	ed := daysFromYyyyWwD(endExclusive.year, endExclusive.week, DayOfWeekMonday)
-	w, _, _ := exact.DivTrunc(ed-bd, 7)
-	return w
-}
-
-func (yw YearWeek) WholeYearsUntil(endExclusive YearWeek) int64 {
-	by, bw := yw.YyyyWw()
-	ey, ew := endExclusive.YyyyWw()
-	wy := int64(Year(ey) - Year(by))
-
-	if yw.After(endExclusive) && bw < ew {
-		return wy + 1
-	}
-	if yw.Before(endExclusive) && bw > ew {
-		return wy - 1
-	}
-	return wy
 }

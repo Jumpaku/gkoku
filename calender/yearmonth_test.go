@@ -113,6 +113,19 @@ func TestYearMonth_ContainsDay(t *testing.T) {
 	}
 }
 
+func TestYearMonth_Date(t *testing.T) {
+	for _, testcase := range testcasesYearMonthDay {
+		sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
+		for day := 1; day <= sut.Days(); day++ {
+			t.Run(fmt.Sprintf("%d-%d-%d", testcase.sutYear, testcase.sutMonth, day), func(t *testing.T) {
+				got := sut.Date(day)
+				want := YyyyMmDd(testcase.sutYear, Month(testcase.sutMonth), day)
+				AssertEqualDate(t, want, got)
+			})
+		}
+	}
+}
+
 func TestYearMonth_FirstDate(t *testing.T) {
 	for _, testcase := range testcasesYearMonthDay {
 		sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
@@ -158,25 +171,23 @@ func TestYearMonth_Compare(t *testing.T) {
 	}
 
 	for _, testcase := range testcases {
+		sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
+		in := YearMonthOf(testcase.inYear, Month(testcase.inMonth))
 		t.Run(fmt.Sprintf("%d-%d <=> %d-%d", testcase.sutYear, testcase.sutMonth, testcase.inYear, testcase.inMonth), func(t *testing.T) {
-			sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
-			in := YearMonthOf(testcase.inYear, Month(testcase.inMonth))
-			{
-				got := sut.Cmp(in)
-				assert.Equal(t, testcase.want, got)
-			}
-			{
-				got := sut.Equal(in)
-				assert.Equal(t, testcase.want == 0, got)
-			}
-			{
-				got := sut.Before(in)
-				assert.Equal(t, testcase.want < 0, got)
-			}
-			{
-				got := sut.After(in)
-				assert.Equal(t, testcase.want > 0, got)
-			}
+			got := sut.Cmp(in)
+			assert.Equal(t, testcase.want, got)
+		})
+		t.Run(fmt.Sprintf("%d-%d == %d-%d", testcase.sutYear, testcase.sutMonth, testcase.inYear, testcase.inMonth), func(t *testing.T) {
+			got := sut.Equal(in)
+			assert.Equal(t, testcase.want == 0, got)
+		})
+		t.Run(fmt.Sprintf("%d-%d < %d-%d", testcase.sutYear, testcase.sutMonth, testcase.inYear, testcase.inMonth), func(t *testing.T) {
+			got := sut.Before(in)
+			assert.Equal(t, testcase.want < 0, got)
+		})
+		t.Run(fmt.Sprintf("%d-%d > %d-%d", testcase.sutYear, testcase.sutMonth, testcase.inYear, testcase.inMonth), func(t *testing.T) {
+			got := sut.After(in)
+			assert.Equal(t, testcase.want > 0, got)
 		})
 	}
 }

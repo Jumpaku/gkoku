@@ -37,7 +37,9 @@ func (y Year) Days() int {
 	return 365
 }
 func (y Year) Weeks() int {
-	return int(YearWeekOf(int(y), 1).WeeksUntil(YearWeekOf(int(y+1), 1)))
+	m1 := YearWeekOf(int(y), 1).Date(DayOfWeekMonday)
+	m2 := YearWeekOf(int(y+1), 1).Date(DayOfWeekMonday)
+	return int(m1.DaysUntil(m2) / 7)
 }
 
 func (y Year) Date(dayOfYear int) Date {
