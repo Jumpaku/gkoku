@@ -3,7 +3,7 @@ package calendar
 import (
 	"cmp"
 	"fmt"
-	"github.com/Jumpaku/gkoku/exact"
+	"github.com/Jumpaku/gkoku/internal/exact"
 	"github.com/Jumpaku/go-assert"
 )
 
@@ -29,6 +29,7 @@ var _ interface {
 	Equal(other Date) bool
 	Before(other Date) bool
 	After(other Date) bool
+	String() string
 } = Date{}
 
 func YyyyMmDd(year int, month Month, dayOfMonth int) Date {
@@ -133,6 +134,10 @@ func (d Date) WholeWeeksUntil(endExclusive Date) int64 {
 func (d Date) WholeYearsUntil(endExclusive Date) int64 {
 	wy, _, _ := exact.DivTrunc(d.WholeMonthsUntil(endExclusive), 12)
 	return wy
+}
+
+func (d Date) String() string {
+	return FormatDate(d, DateFormatYyyyMmDd)
 }
 
 func toEpochDays(year int, month Month, day int) int64 {

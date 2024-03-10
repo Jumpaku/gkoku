@@ -1,11 +1,16 @@
 package clock
 
+import (
+	"fmt"
+	"math"
+)
+
 type State int8
 
 const (
 	// StateOK represents no error.
 	StateOK State = (1 << iota) >> 1
-	// StateOverflow bit is set if it was obtained from an operation which resulted an overflow.
+	// StateOverflow bit is set if overflow occurred
 	StateOverflow
 )
 
@@ -24,6 +29,9 @@ type Duration struct {
 	seconds int64
 	nano    int
 }
+
+var MinDuration = Duration{seconds: math.MinInt64}
+var MaxDuration = Duration{seconds: math.MaxInt64, nano: NanosPerSecond - 1}
 
 func Seconds(seconds int64, nano int64) (d Duration) {
 	secs, nanos, state := divFloor(nano, NanosPerSecond)
@@ -69,6 +77,7 @@ var _ interface {
 	Cmp(o Duration) int
 	State() State
 	OK() bool
+	String() string
 } = Duration{}
 
 func (d Duration) Seconds() (seconds int64, nano int64) {
@@ -176,6 +185,10 @@ func (d Duration) greater(o Duration) bool {
 		return d.nano > o.nano
 	}
 	return d.seconds > o.seconds
+}
+
+func (d Duration) String() string {
+	return fmt.Sprintf(`%d.%09d`, d.seconds, d.nano)
 }
 
 func (d Duration) State() State {

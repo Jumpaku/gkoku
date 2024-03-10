@@ -8,6 +8,9 @@ func Unix(unixSeconds int64, nano int64) Instant {
 	return Instant{unixSeconds: Seconds(unixSeconds, nano)}
 }
 
+var MinInstant = Instant{unixSeconds: MinDuration}
+var MaxInstant = Instant{unixSeconds: MaxDuration}
+
 var _ interface {
 	Unix() (seconds int64, nano int64)
 	Add(o Duration) Instant
@@ -19,6 +22,7 @@ var _ interface {
 	Before(o Instant) bool
 	After(o Instant) bool
 	Equal(o Instant) bool
+	String() string
 	State() State
 	OK() bool
 } = Instant{}
@@ -61,6 +65,10 @@ func (i Instant) After(o Instant) bool {
 
 func (i Instant) Equal(o Instant) bool {
 	return i.unixSeconds.Cmp(o.unixSeconds) == 0
+}
+
+func (i Instant) String() string {
+	return i.unixSeconds.String()
 }
 
 func (i Instant) State() State {

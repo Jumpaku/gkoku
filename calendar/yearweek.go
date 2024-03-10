@@ -19,6 +19,7 @@ var _ interface {
 	Equal(other YearWeek) bool
 	Before(other YearWeek) bool
 	After(other YearWeek) bool
+	String() string
 } = YearWeek{}
 
 func (yw YearWeek) YyyyWw() (year int, week int) {
@@ -68,4 +69,8 @@ func (yw YearWeek) After(other YearWeek) bool {
 		return yw.week > other.week
 	}
 	return yw.year > other.year
+}
+
+func (yw YearWeek) String() string {
+	return FormatYearWeek(yw)
 }

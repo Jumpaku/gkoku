@@ -2,7 +2,7 @@ package calendar
 
 import (
 	"cmp"
-	"github.com/Jumpaku/gkoku/exact"
+	"github.com/Jumpaku/gkoku/internal/exact"
 )
 
 type YearMonth struct {
@@ -30,6 +30,7 @@ var _ interface {
 	Equal(other YearMonth) bool
 	Before(other YearMonth) bool
 	After(other YearMonth) bool
+	String() string
 } = YearMonth{}
 
 func (ym YearMonth) YyyyMm() (year int, month Month) {
@@ -111,4 +112,8 @@ func (ym YearMonth) WholeYearsUntil(endExclusive YearMonth) int64 {
 		return wy - 1
 	}
 	return wy
+}
+
+func (ym YearMonth) String() string {
+	return FormatYearMonth(ym)
 }

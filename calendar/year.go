@@ -16,6 +16,7 @@ var _ interface {
 	Month(month Month) YearMonth
 	FirstMonth() YearMonth
 	LastMonth() YearMonth
+	String() string
 } = Year(0)
 
 func (y Year) IsLeap() bool {
@@ -85,4 +86,8 @@ func (y Year) ContainsDay(dayOfYear int) bool {
 
 func (y Year) ContainsWeek(week int) bool {
 	return 1 <= week && week <= y.Weeks()
+}
+
+func (y Year) String() string {
+	return FormatYear(y)
 }

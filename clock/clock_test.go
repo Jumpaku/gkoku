@@ -70,10 +70,10 @@ func TestOffsetClock(t *testing.T) {
 	}
 }
 
-func TestSystemClock(t *testing.T) {
+func TestWallClock(t *testing.T) {
 	for number := 0; number < 5; number++ {
 		t.Run(fmt.Sprintf("%d", number), func(t *testing.T) {
-			sut := System()
+			sut := Wall()
 			got, _ := sut.Now().Unix()
 			want := time.Now().Unix()
 			assert2.True(t, got <= want)

@@ -2,7 +2,7 @@ package clock
 
 import (
 	"errors"
-	"github.com/Jumpaku/gkoku/exact"
+	"github.com/Jumpaku/gkoku/internal/exact"
 )
 
 func divFloor(x, y int64) (d int64, m int64, state State) {

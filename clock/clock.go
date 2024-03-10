@@ -16,7 +16,7 @@ func (f NowFunc) Now() Instant {
 	return f()
 }
 
-func System() Clock {
+func Wall() Clock {
 	return NewClock(func() Instant {
 		now := time.Now()
 		return Unix(now.Unix(), int64(now.Nanosecond()))
