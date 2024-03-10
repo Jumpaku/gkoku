@@ -13,6 +13,7 @@ type Date struct {
 }
 
 var _ interface {
+	Unix() int64
 	YyyyMmDd() (year int, month Month, dayOfMonth int)
 	YyyyWwD() (year int, week int, dayOfWeek DayOfWeek)
 	YyyyDdd() (year int, dayOfYear int)
@@ -53,6 +54,10 @@ func YyyyDdd(year int, dayOfYear int) Date {
 	lastDayOfYear := Year(year).Days()
 	assert.Params(1 <= dayOfYear && dayOfYear <= lastDayOfYear, "day must be in [%d, %d]: %d", 1, lastDayOfYear, dayOfYear)
 	return Date{days: daysFromYyyyDdd(year, dayOfYear)}
+}
+
+func (d Date) Unix() int64 {
+	return toEpochDays(d.YyyyMmDd())
 }
 
 func (d Date) YyyyMmDd() (year int, month Month, day int) {

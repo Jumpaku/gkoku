@@ -9,7 +9,8 @@ import (
 type DateFormat int
 
 const (
-	DateFormatYyyyMmDd DateFormat = iota
+	DateFormatAny DateFormat = iota
+	DateFormatYyyyMmDd
 	DateFormatYyyyWwD
 	DateFormatYyyyDdd
 )
@@ -29,24 +30,38 @@ const (
 // where y, m, d, and w are decimal digits and W is a rune 'W'.
 // Each of the above formats may have a prefix of '-' or '+' for the sign of the year.
 func ParseDate(s string, format DateFormat) (d Date, err error) {
+	reYyyyMmDd := regexp.MustCompile(`^[-+]?\d{4,}-\d{2}-\d{2}$`)
+	reYyyyWwD := regexp.MustCompile(`^[-+]?\d{4,}-W\d{2}-\d$`)
+	reYyyyDdd := regexp.MustCompile(`^[-+]?\d{4,}-\d{3}$`)
 	switch format {
 	default:
 		return Date{}, fmt.Errorf("invalid date format: %q", s)
 	case DateFormatYyyyMmDd:
-		if !regexp.MustCompile(`^[-+]?\d{4,}-\d{2}-\d{2}$`).MatchString(s) {
+		if !reYyyyMmDd.MatchString(s) {
 			return Date{}, fmt.Errorf("invalid date format: %q", s)
 		}
 		return parseYyyyMmDd(s)
 	case DateFormatYyyyWwD:
-		if !regexp.MustCompile(`^[-+]?\d{4,}-W\d{2}-\d$`).MatchString(s) {
+		if !reYyyyWwD.MatchString(s) {
 			return Date{}, fmt.Errorf("invalid date format: %q", s)
 		}
 		return parseYyyyWwD(s)
 	case DateFormatYyyyDdd:
-		if !regexp.MustCompile(`^[-+]?\d{4,}-\d{3}$`).MatchString(s) {
+		if !reYyyyDdd.MatchString(s) {
 			return Date{}, fmt.Errorf("invalid date format: %q", s)
 		}
 		return parseYyyyDdd(s)
+	case DateFormatAny:
+		switch {
+		default:
+			return Date{}, fmt.Errorf("invalid date format: %q", s)
+		case reYyyyMmDd.MatchString(s):
+			return parseYyyyMmDd(s)
+		case reYyyyWwD.MatchString(s):
+			return parseYyyyWwD(s)
+		case reYyyyDdd.MatchString(s):
+			return parseYyyyDdd(s)
+		}
 	}
 }
 
