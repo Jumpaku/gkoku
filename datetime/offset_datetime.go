@@ -4,24 +4,34 @@ import (
 	"fmt"
 	"github.com/Jumpaku/gkoku/calendar"
 	"github.com/Jumpaku/gkoku/clock"
+	"github.com/Jumpaku/gkoku/datetime/zone"
+	"github.com/Jumpaku/gkoku/internal/exact"
 	"regexp"
 	"strings"
 )
 
 type OffsetDateTime interface {
 	String() string
-	Offset() OffsetMinutes
+	Offset() zone.OffsetMinutes
 	Date() calendar.Date
 	Time() Time
 	Instant() clock.Instant
 }
 
-func NewOffsetDateTime(date calendar.Date, time Time, offset OffsetMinutes) OffsetDateTime {
+func NewOffsetDateTime(date calendar.Date, time Time, offset zone.OffsetMinutes) OffsetDateTime {
 	return offsetDateTime{
 		date:   date,
 		time:   time,
 		offset: offset,
 	}
+}
+
+func FromInstant(at clock.Instant, offset zone.OffsetMinutes) OffsetDateTime {
+	sec, nano := offset.AddTo(at).Unix()
+	unixDays, secondsOfDay, _ := exact.DivFloor(sec, clock.SecondsPerDay)
+	date := calendar.UnixDay(unixDays)
+	time := TimeFromSeconds(int(secondsOfDay), int(nano))
+	return NewOffsetDateTime(date, time, offset)
 }
 
 func ParseOffsetDateTime(s string) (d OffsetDateTime, err error) {
@@ -39,7 +49,7 @@ func ParseOffsetDateTime(s string) (d OffsetDateTime, err error) {
 	s = arr[1]
 
 	so := regexp.MustCompile(`[-+Z].*$`).FindString(s)
-	offset, err := ParseOffset(so)
+	offset, err := zone.ParseOffset(so)
 	if err != nil {
 		return nil, fmt.Errorf(`failed to parse offset datetime: invalid offset: %w`, err)
 	}
@@ -59,14 +69,14 @@ func FormatOffsetDateTime(d OffsetDateTime) string {
 type offsetDateTime struct {
 	date   calendar.Date
 	time   Time
-	offset OffsetMinutes
+	offset zone.OffsetMinutes
 }
 
 func (d offsetDateTime) String() string {
 	return FormatOffsetDateTime(d)
 }
 
-func (d offsetDateTime) Offset() OffsetMinutes {
+func (d offsetDateTime) Offset() zone.OffsetMinutes {
 	return d.offset
 }
 
@@ -85,7 +95,7 @@ func (d offsetDateTime) Instant() clock.Instant {
 
 	offset := clock.Minutes(o)
 
-	unixDays := d.Date().Unix()
+	unixDays := d.Date().UnixDay()
 
 	return clock.Unix(clock.Days(unixDays).Add(secondsOfDay).Sub(offset).Seconds())
 }

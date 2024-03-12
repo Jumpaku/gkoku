@@ -1,8 +1,9 @@
-package datetime
+package zone_test
 
 import (
 	"fmt"
 	"github.com/Jumpaku/gkoku/clock"
+	. "github.com/Jumpaku/gkoku/datetime/zone"
 	"github.com/Jumpaku/gkoku/internal/tests/assert"
 	"testing"
 )

@@ -2,6 +2,7 @@ package datetime
 
 import (
 	"fmt"
+	"github.com/Jumpaku/gkoku/clock"
 	"github.com/Jumpaku/go-assert"
 	"regexp"
 	"strconv"
@@ -25,6 +26,17 @@ func TimeOf(hour, minute, second, nano int) Time {
 		assert.Params(second == 0, "second must be 0 if hour is 24: %d", second)
 		assert.Params(nano == 0, "nano must be 0 if hour is 24: %d", nano)
 	}
+	return Time{hour: hour, minute: minute, second: second, nano: nano}
+}
+
+func TimeFromSeconds(secondsOfDay, nano int) Time {
+	assert.Params(0 <= secondsOfDay && secondsOfDay <= clock.SecondsPerDay, "secondsOfDay must be in [0,%d]: %d", clock.SecondsPerDay, secondsOfDay)
+	assert.Params(0 <= nano && nano < 1_000_000_000, "nano must be in [0,1_000_000_000): %d", nano)
+	if secondsOfDay == clock.SecondsPerDay {
+		assert.Params(nano == 0, "nano must be 0 if hour is 24: %d", nano)
+	}
+	wholeMinutes, second := secondsOfDay/clock.SecondsPerMinute, secondsOfDay%clock.SecondsPerMinute
+	hour, minute := wholeMinutes/clock.MinutesPerHour, wholeMinutes%clock.MinutesPerHour
 	return Time{hour: hour, minute: minute, second: second, nano: nano}
 }
 

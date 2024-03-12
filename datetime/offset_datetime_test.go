@@ -1,10 +1,13 @@
-package datetime
+package datetime_test
 
 import (
 	"bytes"
 	_ "embed"
 	"fmt"
 	"github.com/Jumpaku/gkoku/calendar"
+	"github.com/Jumpaku/gkoku/clock"
+	. "github.com/Jumpaku/gkoku/datetime"
+	. "github.com/Jumpaku/gkoku/datetime/zone"
 	"github.com/Jumpaku/gkoku/internal/tests"
 	"github.com/Jumpaku/gkoku/internal/tests/assert"
 	assert2 "github.com/stretchr/testify/assert"
@@ -363,7 +366,7 @@ func TestParseOffsetDateTime(t *testing.T) {
 	}
 }
 
-//go:embed testcasaes/testdata/offsetdatetime.txt
+//go:embed testcases/testdata/offsetdatetime.txt
 var testdataOffsetDateTime []byte
 
 func TestOffsetDateTime_Instant(t *testing.T) {
@@ -395,6 +398,42 @@ func TestOffsetDateTime_Instant(t *testing.T) {
 			)
 			got, _ := sut.Instant().Unix()
 			assert.Equal(t, testcase.want, got)
+		})
+	}
+}
+
+func TestFromInstant(t *testing.T) {
+	type testcase struct {
+		inUnix                           int64
+		inOffset                         OffsetMinutes
+		wantYear, wantMonth, wantDay     int
+		wantHour, wantMinute, wantSecond int
+	}
+
+	s := tests.Scanner{Data: bytes.NewBuffer(testdataOffsetDateTime)}
+	nTestcases := s.ScanInt()
+	var testcases []testcase
+	for i := 0; i < nTestcases; i++ {
+		ints := s.ScanInt64s(8)
+		testcases = append(testcases, testcase{
+			inOffset: OffsetMinutes(ints[6]),
+			inUnix:   ints[7],
+			wantYear: int(ints[0]), wantMonth: int(ints[1]), wantDay: int(ints[2]),
+			wantHour: int(ints[3]), wantMinute: int(ints[4]), wantSecond: int(ints[5]),
+		})
+	}
+
+	for number, testcase := range testcases {
+		t.Run(fmt.Sprintf(`%d`, number), func(t *testing.T) {
+			got := FromInstant(clock.Unix(testcase.inUnix, 0), testcase.inOffset)
+			gotY, gotM, gotD := got.Date().YyyyMmDd()
+			assert.Equal(t, testcase.wantYear, gotY)
+			assert.Equal(t, testcase.wantMonth, int(gotM))
+			assert.Equal(t, testcase.wantDay, gotD)
+			assert.Equal(t, testcase.wantHour, got.Time().Hour())
+			assert.Equal(t, testcase.wantMinute, got.Time().Minute())
+			assert.Equal(t, testcase.wantSecond, got.Time().Second())
+			assert.Equal(t, 0, got.Time().Nano())
 		})
 	}
 }

@@ -1,4 +1,4 @@
-package datetime
+package zone
 
 import (
 	"fmt"
