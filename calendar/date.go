@@ -13,7 +13,7 @@ type Date struct {
 }
 
 var _ interface {
-	Unix() int64
+	UnixDay() int64
 	YyyyMmDd() (year int, month Month, dayOfMonth int)
 	YyyyWwD() (year int, week int, dayOfWeek DayOfWeek)
 	YyyyDdd() (year int, dayOfYear int)
@@ -56,7 +56,11 @@ func YyyyDdd(year int, dayOfYear int) Date {
 	return Date{days: daysFromYyyyDdd(year, dayOfYear)}
 }
 
-func (d Date) Unix() int64 {
+func UnixDay(epochDays int64) Date {
+	return Date{days: epochDays + days0000To1970 - 366}
+}
+
+func (d Date) UnixDay() int64 {
 	return toEpochDays(d.YyyyMmDd())
 }
 

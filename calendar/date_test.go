@@ -11,6 +11,32 @@ import (
 	"testing"
 )
 
+func TestUnixDay(t *testing.T) {
+	testcases := []struct {
+		in   int64
+		want Date
+	}{
+		{
+			in:   0,
+			want: YyyyMmDd(1970, 1, 1),
+		},
+		{
+			in:   1,
+			want: YyyyMmDd(1970, 1, 2),
+		},
+		{
+			in:   -1,
+			want: YyyyMmDd(1969, 12, 31),
+		},
+	}
+	for _, testcase := range testcases {
+		t.Run(fmt.Sprintf(`%d`, testcase.in), func(t *testing.T) {
+			got := UnixDay(testcase.in)
+			calendar.AssertEqualDate(t, testcase.want, got)
+		})
+	}
+}
+
 //go:embed testcases/testdata/date_yyyymmdd.txt
 var testdataYyyyMmDd []byte
 

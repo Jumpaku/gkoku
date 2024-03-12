@@ -51,6 +51,10 @@ func (i Instant) Diff(o Instant) Duration {
 	return i.unixSeconds.Sub(o.unixSeconds)
 }
 
+func (i Instant) Between(lo, hi Instant) bool {
+	return lo.Cmp(i) <= 0 && i.Cmp(hi) <= 0
+}
+
 func (i Instant) Cmp(o Instant) int {
 	return i.unixSeconds.Cmp(o.unixSeconds)
 }

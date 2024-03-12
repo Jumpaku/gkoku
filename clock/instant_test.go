@@ -168,6 +168,115 @@ func TestInstant_SubNano(t *testing.T) {
 	}
 }
 
+func TestInstant_Between(t *testing.T) {
+	testcases := []struct {
+		name   string
+		sut    Instant
+		inLow  Instant
+		inHigh Instant
+		want   bool
+	}{
+		{
+			name:   "sut<h<l",
+			sut:    Unix(10, 0),
+			inLow:  Unix(30, 0),
+			inHigh: Unix(20, 0),
+			want:   false,
+		},
+		{
+			name:   "h=sut<l",
+			sut:    Unix(20, 0),
+			inLow:  Unix(30, 0),
+			inHigh: Unix(20, 0),
+			want:   false,
+		},
+		{
+			name:   "h<sut<l",
+			sut:    Unix(25, 0),
+			inLow:  Unix(30, 0),
+			inHigh: Unix(20, 0),
+			want:   false,
+		},
+		{
+			name:   "h<sut=l",
+			sut:    Unix(25, 0),
+			inLow:  Unix(30, 0),
+			inHigh: Unix(20, 0),
+			want:   false,
+		},
+		{
+			name:   "h<l<sut",
+			sut:    Unix(40, 0),
+			inLow:  Unix(30, 0),
+			inHigh: Unix(20, 0),
+			want:   false,
+		},
+		{
+			name:   "sut<l=h",
+			sut:    Unix(15, 0),
+			inLow:  Unix(25, 0),
+			inHigh: Unix(25, 0),
+			want:   false,
+		},
+		{
+			name:   "l=sut=h",
+			sut:    Unix(25, 0),
+			inLow:  Unix(25, 0),
+			inHigh: Unix(25, 0),
+			want:   true,
+		},
+		{
+			name:   "l=h<sut",
+			sut:    Unix(35, 0),
+			inLow:  Unix(25, 0),
+			inHigh: Unix(25, 0),
+			want:   false,
+		},
+		{
+			name:   "sut<l<h",
+			sut:    Unix(10, 0),
+			inLow:  Unix(20, 0),
+			inHigh: Unix(30, 0),
+			want:   false,
+		},
+		{
+			name:   "l=sut<h",
+			sut:    Unix(20, 0),
+			inLow:  Unix(20, 0),
+			inHigh: Unix(30, 0),
+			want:   true,
+		},
+		{
+			name:   "l<sut<h",
+			sut:    Unix(25, 0),
+			inLow:  Unix(20, 0),
+			inHigh: Unix(30, 0),
+			want:   true,
+		},
+		{
+			name:   "l<sut=h",
+			sut:    Unix(30, 0),
+			inLow:  Unix(20, 0),
+			inHigh: Unix(30, 0),
+			want:   true,
+		},
+		{
+			name:   "l<h<sut",
+			sut:    Unix(40, 0),
+			inLow:  Unix(20, 0),
+			inHigh: Unix(30, 0),
+			want:   false,
+		},
+	}
+	for _, testcase := range testcases {
+		t.Run(testcase.name, func(t *testing.T) {
+			got := testcase.sut.Between(testcase.inLow, testcase.inHigh)
+
+			assert.Equal(t, testcase.want, got)
+		})
+	}
+}
+
 //go:embed testcases/testdata/instant_cmp.txt
 var testcasesInstantCmp []byte
 
