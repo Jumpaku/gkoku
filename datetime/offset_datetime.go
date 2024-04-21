@@ -2,23 +2,22 @@ package datetime
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku/calendar"
-	"github.com/Jumpaku/gkoku/clock"
+	"github.com/Jumpaku/gkoku"
+	"github.com/Jumpaku/gkoku/date"
 	"github.com/Jumpaku/gkoku/internal/exact"
-	"github.com/Jumpaku/gkoku/zone"
 	"regexp"
 	"strings"
 )
 
 type OffsetDateTime interface {
 	String() string
-	Offset() zone.OffsetMinutes
-	Date() calendar.Date
+	Offset() OffsetMinutes
+	Date() date.Date
 	Time() Time
-	Instant() clock.Instant
+	Instant() gkoku.Instant
 }
 
-func NewOffsetDateTime(date calendar.Date, time Time, offset zone.OffsetMinutes) OffsetDateTime {
+func NewOffsetDateTime(date date.Date, time Time, offset OffsetMinutes) OffsetDateTime {
 	return offsetDateTime{
 		date:   date,
 		time:   time,
@@ -26,10 +25,10 @@ func NewOffsetDateTime(date calendar.Date, time Time, offset zone.OffsetMinutes)
 	}
 }
 
-func FromInstant(at clock.Instant, offset zone.OffsetMinutes) OffsetDateTime {
+func FromInstant(at gkoku.Instant, offset OffsetMinutes) OffsetDateTime {
 	sec, nano := offset.AddTo(at).Unix()
-	unixDays, secondsOfDay, _ := exact.DivFloor(sec, clock.SecondsPerDay)
-	date := calendar.UnixDay(unixDays)
+	unixDays, secondsOfDay, _ := exact.DivFloor(sec, gkoku.SecondsPerDay)
+	date := date.UnixDay(unixDays)
 	time := TimeFromSeconds(int(secondsOfDay), int(nano))
 	return NewOffsetDateTime(date, time, offset)
 }
@@ -41,7 +40,7 @@ func ParseOffsetDateTime(s string) (d OffsetDateTime, err error) {
 
 	arr := strings.Split(s, "T")
 
-	date, err := calendar.ParseDate(arr[0], calendar.DateFormatAny)
+	date, err := date.ParseDate(arr[0], date.DateFormatAny)
 	if err != nil {
 		return nil, fmt.Errorf(`failed to parse offset datetime: invalid date: %w`, err)
 	}
@@ -49,7 +48,7 @@ func ParseOffsetDateTime(s string) (d OffsetDateTime, err error) {
 	s = arr[1]
 
 	so := regexp.MustCompile(`[-+Z].*$`).FindString(s)
-	offset, err := zone.ParseOffset(so)
+	offset, err := ParseOffset(so)
 	if err != nil {
 		return nil, fmt.Errorf(`failed to parse offset datetime: invalid offset: %w`, err)
 	}
@@ -67,20 +66,20 @@ func FormatOffsetDateTime(d OffsetDateTime) string {
 }
 
 type offsetDateTime struct {
-	date   calendar.Date
+	date   date.Date
 	time   Time
-	offset zone.OffsetMinutes
+	offset OffsetMinutes
 }
 
 func (d offsetDateTime) String() string {
 	return FormatOffsetDateTime(d)
 }
 
-func (d offsetDateTime) Offset() zone.OffsetMinutes {
+func (d offsetDateTime) Offset() OffsetMinutes {
 	return d.offset
 }
 
-func (d offsetDateTime) Date() calendar.Date {
+func (d offsetDateTime) Date() date.Date {
 	return d.date
 }
 
@@ -88,14 +87,14 @@ func (d offsetDateTime) Time() Time {
 	return d.time
 }
 
-func (d offsetDateTime) Instant() clock.Instant {
+func (d offsetDateTime) Instant() gkoku.Instant {
 	t := d.Time()
 	o, h, m, s, n := int64(d.Offset()), int64(t.Hour()), int64(t.Minute()), int64(t.Second()), int64(t.Nano())
-	secondsOfDay := clock.Hours(h).Add(clock.Minutes(m)).Add(clock.Seconds(s, n))
+	secondsOfDay := gkoku.Hours(h).Add(gkoku.Minutes(m)).Add(gkoku.Seconds(s, n))
 
-	offset := clock.Minutes(o)
+	offset := gkoku.Minutes(o)
 
 	unixDays := d.Date().UnixDay()
 
-	return clock.Unix(clock.Days(unixDays).Add(secondsOfDay).Sub(offset).Seconds())
+	return gkoku.Unix(gkoku.Days(unixDays).Add(secondsOfDay).Sub(offset).Seconds())
 }
