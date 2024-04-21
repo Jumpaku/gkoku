@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/Jumpaku/gkoku/calendar"
 	"github.com/Jumpaku/gkoku/clock"
-	"github.com/Jumpaku/gkoku/datetime/zone"
 	"github.com/Jumpaku/gkoku/internal/exact"
+	"github.com/Jumpaku/gkoku/zone"
 	"regexp"
 	"strings"
 )

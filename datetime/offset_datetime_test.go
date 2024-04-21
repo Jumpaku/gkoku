@@ -7,9 +7,9 @@ import (
 	"github.com/Jumpaku/gkoku/calendar"
 	"github.com/Jumpaku/gkoku/clock"
 	. "github.com/Jumpaku/gkoku/datetime"
-	. "github.com/Jumpaku/gkoku/datetime/zone"
 	"github.com/Jumpaku/gkoku/internal/tests"
 	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	. "github.com/Jumpaku/gkoku/zone"
 	assert2 "github.com/stretchr/testify/assert"
 	"testing"
 )

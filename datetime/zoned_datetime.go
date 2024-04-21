@@ -1,20 +1,22 @@
 package datetime
 
 import (
+	"fmt"
 	"github.com/Jumpaku/gkoku/calendar"
 	"github.com/Jumpaku/gkoku/clock"
-	"github.com/Jumpaku/gkoku/datetime/zone"
+	zone2 "github.com/Jumpaku/gkoku/zone"
 	"slices"
 )
 
 type ZonedDateTime interface {
 	Date() calendar.Date
 	Time() Time
-	Zone() zone.Zone
+	Zone() zone2.Zone
+	String() string
 	InstantCandidates() []clock.Instant
 }
 
-func NewZonedDateTime(date calendar.Date, time Time, zone zone.Zone) ZonedDateTime {
+func NewZonedDateTime(date calendar.Date, time Time, zone zone2.Zone) ZonedDateTime {
 	return zonedDateTime{
 		date: date,
 		time: time,
@@ -25,10 +27,14 @@ func NewZonedDateTime(date calendar.Date, time Time, zone zone.Zone) ZonedDateTi
 type zonedDateTime struct {
 	date calendar.Date
 	time Time
-	zone zone.Zone
+	zone zone2.Zone
 }
 
-func (d zonedDateTime) Zone() zone.Zone {
+func (d zonedDateTime) String() string {
+	return fmt.Sprintf(`%s%s [%s]`, d.Date().String(), d.Time().String(), d.Zone().ID())
+}
+
+func (d zonedDateTime) Zone() zone2.Zone {
 	return d.zone
 }
 
@@ -41,14 +47,14 @@ func (d zonedDateTime) Time() Time {
 }
 
 func (d zonedDateTime) InstantCandidates() []clock.Instant {
-	tu := NewOffsetDateTime(d.Date(), d.Time(), zone.OffsetMinutes(0)).Instant()
-	tlo := zone.MinOffsetMinutes.AddTo(tu)
-	thi := zone.MaxOffsetMinutes.AddTo(tu)
+	tu := NewOffsetDateTime(d.Date(), d.Time(), zone2.OffsetMinutes(0)).Instant()
+	tlo := zone2.MinOffsetMinutes.AddTo(tu)
+	thi := zone2.MaxOffsetMinutes.AddTo(tu)
 	z := d.Zone()
 	ts := z.TransitionsBetween(tlo, thi)
 	if len(ts) == 0 {
-		o := z.FindOffset(tu)
-		return []clock.Instant{o.AddTo(tu)}
+		offset := z.FindOffset(tu)
+		return []clock.Instant{NewOffsetDateTime(d.Date(), d.Time(), offset).Instant()}
 	}
 
 	var candidates []clock.Instant
