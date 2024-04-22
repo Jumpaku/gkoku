@@ -114,7 +114,7 @@ func TestLoadProvider(t *testing.T) {
 						Month:               3,
 						BaseDay:             25,
 						DayOfWeek:           7,
-						SecondOfDay:         3600,
+						TimeOfDay:           datetime.TimeOf(1, 0, 0, 0),
 						TimeOffsetMinutes:   0,
 					}),
 					zone2.NewRule(zone2.RuleArg{
@@ -123,7 +123,7 @@ func TestLoadProvider(t *testing.T) {
 						Month:               10,
 						BaseDay:             25,
 						DayOfWeek:           7,
-						SecondOfDay:         3600,
+						TimeOfDay:           datetime.TimeOf(1, 0, 0, 0),
 						TimeOffsetMinutes:   0,
 					}),
 				}),

@@ -1,6 +1,7 @@
 package zone
 
 import (
+	"github.com/Jumpaku/gkoku/date"
 	"github.com/Jumpaku/gkoku/datetime"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -9,10 +10,10 @@ import (
 type RuleArg struct {
 	OffsetMinutesBefore datetime.OffsetMinutes
 	OffsetMinutesAfter  datetime.OffsetMinutes
-	Month               int
+	Month               date.Month
 	BaseDay             int
-	DayOfWeek           int
-	SecondOfDay         int
+	DayOfWeek           date.DayOfWeek
+	TimeOfDay           datetime.Time
 	TimeOffsetMinutes   datetime.OffsetMinutes
 }
 
@@ -23,7 +24,7 @@ func NewRule(args RuleArg) Rule {
 		Month:               args.Month,
 		BaseDay:             args.BaseDay,
 		DayOfWeek:           args.DayOfWeek,
-		SecondOfDay:         args.SecondOfDay,
+		TimeOfDay:           args.TimeOfDay,
 		TimeOffsetMinutes:   args.TimeOffsetMinutes,
 	}
 }

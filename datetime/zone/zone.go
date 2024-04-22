@@ -5,6 +5,8 @@ import (
 	"github.com/Jumpaku/gkoku"
 	"github.com/Jumpaku/gkoku/datetime"
 	"github.com/Jumpaku/go-assert"
+	"github.com/samber/lo"
+	"slices"
 	"sort"
 )
 
@@ -44,26 +46,60 @@ func CreateFixed(zoneID string, offset datetime.OffsetMinutes) Zone {
 }
 
 func (z Zone) FindOffset(at gkoku.Instant) datetime.OffsetMinutes {
-	ts := z.transitions
-	n := len(ts)
+	ts, rs := z.transitions, z.rules
+	if len(ts) == 0 && len(rs) == 0 {
+		return 0
+	}
+
+	if n := len(ts); n > 0 {
+		if at.Cmp(ts[n-1].TransitionTimestamp) < 0 || len(rs) == 0 {
+			return findOffset(ts, at)
+		}
+	}
+
+	minYear, _, _ := datetime.FromInstant(at, datetime.MinOffsetMinutes).Date().YyyyMmDd()
+	maxYear, _, _ := datetime.FromInstant(at, datetime.MaxOffsetMinutes).Date().YyyyMmDd()
+	rts := collectRuledTransitions(z.rules, minYear, maxYear)
+	rts = lo.Filter(rts, func(t Transition, _ int) bool {
+		n := len(ts)
+		return n == 0 || t.TransitionTimestamp.Cmp(ts[n-1].TransitionTimestamp) > 0
+	})
+
+	return findOffset(rts, at)
+}
+
+func findOffset(transitions []Transition, at gkoku.Instant) datetime.OffsetMinutes {
+	n := len(transitions)
 	if n == 0 {
 		return 0
 	}
 
-	if t := ts[n-1]; t.TransitionTimestamp.Cmp(at) <= 0 {
+	if t := transitions[n-1]; t.TransitionTimestamp.Cmp(at) <= 0 {
 		return t.OffsetMinutesAfter
 	}
 
 	idx := sort.Search(n, func(i int) bool {
-		t := z.transitions[i]
-		return at.Cmp(t.TransitionTimestamp) < 0
+		return at.Cmp(transitions[i].TransitionTimestamp) < 0
 	})
 
-	return z.transitions[idx].OffsetMinutesBefore
+	return transitions[idx].OffsetMinutesBefore
 }
 
-func (z Zone) TransitionsBetween(beginAt, endAt gkoku.Instant) []Transition {
-	ts := z.transitions
+func collectRuledTransitions(rules []Rule, minYear, maxYear int) []Transition {
+	ts := []Transition{}
+	for _, r := range rules {
+		for year := minYear; year <= maxYear; year++ {
+			ts = append(ts, r.Transition(year))
+		}
+	}
+
+	slices.SortFunc(ts, func(a, b Transition) int { return a.TransitionTimestamp.Cmp(b.TransitionTimestamp) })
+
+	return ts
+}
+
+func (z Zone) transitionsBetween(beginAt, endAt gkoku.Instant) []Transition {
+	ts := append([]Transition{}, z.transitions...)
 	n := len(ts)
 	if n == 0 || beginAt.After(endAt) {
 		return []Transition{}

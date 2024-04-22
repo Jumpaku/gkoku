@@ -2,6 +2,8 @@ package zone
 
 import (
 	"github.com/Jumpaku/gkoku"
+	"github.com/Jumpaku/gkoku/date"
+	"github.com/Jumpaku/gkoku/datetime"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -19,8 +21,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           1,     /* Monday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekMonday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -36,8 +38,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           2,     /* Tuesday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekTuesday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -53,8 +55,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           3,     /* Wednesday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekWednesday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -70,8 +72,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           4,     /* Thursday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekThursday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -87,8 +89,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           5,     /* Friday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekFriday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -104,8 +106,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           6,     /* Saturday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSaturday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -121,8 +123,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -138,8 +140,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               3,
 				BaseDay:             28,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         86400, /* 24:00:00 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(24, 0, 0, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -155,8 +157,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               2,
 				BaseDay:             1,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -172,8 +174,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               2,
 				BaseDay:             31,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -189,8 +191,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               2,
 				BaseDay:             28,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -206,8 +208,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               2,
 				BaseDay:             29,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2024,
@@ -223,8 +225,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               2,
 				BaseDay:             28,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2023,
@@ -240,8 +242,8 @@ func TestRule_Transition(t *testing.T) {
 				OffsetMinutesAfter:  -60,
 				Month:               2,
 				BaseDay:             29,
-				DayOfWeek:           0,     /* Sunday */
-				SecondOfDay:         37230, /* 10:20:30 */
+				DayOfWeek:           date.DayOfWeekSunday,
+				TimeOfDay:           datetime.TimeOf(10, 20, 30, 0),
 				TimeOffsetMinutes:   60,
 			}),
 			in: 2023,

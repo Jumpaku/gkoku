@@ -1,9 +1,9 @@
 package zone
 
 import (
-	"github.com/Jumpaku/gkoku"
+	"github.com/Jumpaku/gkoku/date"
+	"github.com/Jumpaku/gkoku/date/iter"
 	"github.com/Jumpaku/gkoku/datetime"
-	"time"
 )
 
 type doNotImplement interface {
@@ -18,25 +18,27 @@ type Rule interface {
 type rule struct {
 	OffsetMinutesBefore datetime.OffsetMinutes
 	OffsetMinutesAfter  datetime.OffsetMinutes
-	Month               int
+	Month               date.Month
 	BaseDay             int
-	DayOfWeek           int
-	SecondOfDay         int
+	DayOfWeek           date.DayOfWeek
+	TimeOfDay           datetime.Time
 	TimeOffsetMinutes   datetime.OffsetMinutes
 }
 
 func (r rule) doNotImplement(doNotImplement) {}
 
 func (r rule) Transition(year int) Transition {
-	loc := time.FixedZone("", int(time.Duration(r.TimeOffsetMinutes)*time.Minute/time.Second))
+	dateIter := iter.OfDate(date.YyyyMmDd(year, r.Month, 1))
+	dateIter.Move(r.BaseDay - 1)
 
-	t := time.Date(year, time.Month(r.Month), r.BaseDay, 0, 0, 0, 0, loc)
-	addDays := (r.DayOfWeek - int(t.Weekday()) + 7) % 7
-	t = t.AddDate(0, 0, addDays)
-	t = t.Add(time.Duration(r.SecondOfDay) * time.Second)
+	_, _, dow := dateIter.Get().YyyyWwD()
+	addDays := int((r.DayOfWeek - dow + 7) % 7)
+	dateIter.Move(addDays)
+
+	transitionDateTime := datetime.NewOffsetDateTime(dateIter.Get(), r.TimeOfDay, r.TimeOffsetMinutes)
 
 	return Transition{
-		TransitionTimestamp: gkoku.Unix(t.Unix(), 0),
+		TransitionTimestamp: transitionDateTime.Instant(),
 		OffsetMinutesBefore: r.OffsetMinutesBefore,
 		OffsetMinutesAfter:  r.OffsetMinutesAfter,
 	}

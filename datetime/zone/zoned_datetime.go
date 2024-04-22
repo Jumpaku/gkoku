@@ -51,7 +51,7 @@ func (d zonedDateTime) InstantCandidates() []gkoku.Instant {
 	tlo := datetime.MinOffsetMinutes.AddTo(tu)
 	thi := datetime.MaxOffsetMinutes.AddTo(tu)
 	z := d.Zone()
-	ts := z.TransitionsBetween(tlo, thi)
+	ts := z.transitionsBetween(tlo, thi)
 	if len(ts) == 0 {
 		offset := z.FindOffset(tu)
 		return []gkoku.Instant{datetime.NewOffsetDateTime(d.Date(), d.Time(), offset).Instant()}

@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Jumpaku/gkoku"
+	"github.com/Jumpaku/gkoku/date"
 	"github.com/Jumpaku/gkoku/datetime"
 	"github.com/Jumpaku/go-assert"
 	"slices"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -45,19 +45,28 @@ func LoadProvider(tzotJSONBytes []byte, version string) (Provider, error) {
 
 		rules := []Rule{}
 		for _, rj := range zj.Rules {
-			sod, om, err := parseOffsetTime(rj.OffsetTime)
+			if len(rj.OffsetTime) < 8 {
+				return Provider{}, fmt.Errorf("failed to parse offset time: invalid format")
+			}
+
+			tod, err := datetime.ParseTime(rj.OffsetTime[:8])
 			if err != nil {
-				return Provider{}, fmt.Errorf("failed to parse transition timestamp of zone %q: %w", zoneID, err)
+				return Provider{}, fmt.Errorf("failed to parse offset time of rule %q: %w", zoneID, err)
+			}
+
+			om, err := datetime.ParseOffset(rj.OffsetTime[8:])
+			if err != nil {
+				return Provider{}, fmt.Errorf("failed to parse offset time of rule %q: %w", zoneID, err)
 			}
 
 			rules = append(rules, rule{
 				OffsetMinutesBefore: datetime.OffsetMinutes(rj.OffsetSecondsBefore / 60),
 				OffsetMinutesAfter:  datetime.OffsetMinutes(rj.OffsetSecondsAfter / 60),
-				Month:               rj.Month,
+				Month:               date.Month(rj.Month),
 				BaseDay:             rj.BaseDay,
-				DayOfWeek:           rj.DayOfWeek,
-				SecondOfDay:         sod,
-				TimeOffsetMinutes:   datetime.OffsetMinutes(om),
+				DayOfWeek:           date.DayOfWeek(rj.DayOfWeek),
+				TimeOfDay:           tod,
+				TimeOffsetMinutes:   om,
 			})
 		}
 
@@ -68,51 +77,6 @@ func LoadProvider(tzotJSONBytes []byte, version string) (Provider, error) {
 	slices.Sort(zoneIDs)
 
 	return Provider{version: version, zoneIDs: zoneIDs, zoneMap: zoneMap}, nil
-}
-
-func parseOffsetTime(s string) (secondsOfDay int, offsetMinutes int, err error) {
-	s = strings.ReplaceAll(s, "Z", "+00:00")
-	if len(s) != 14 {
-		return 0, 0, fmt.Errorf("failed to parse offset time: invalid format")
-	}
-	{
-		hh, err := strconv.Atoi(s[0:2])
-		if err != nil {
-			return 0, 0, fmt.Errorf("failed to parse offset time: invalid hour format")
-		}
-
-		mm, err := strconv.Atoi(s[3:5])
-		if err != nil {
-			return 0, 0, fmt.Errorf("failed to parse offset time: invalid minute format")
-		}
-
-		ss, err := strconv.Atoi(s[6:8])
-		if err != nil {
-			return 0, 0, fmt.Errorf("failed to parse offset time: invalid second format")
-		}
-
-		secondsOfDay = hh*3600 + mm*60 + ss
-	}
-	{
-		sign := 1
-		if s[8] == '-' {
-			sign = -1
-		}
-
-		hh, err := strconv.Atoi(s[9:11])
-		if err != nil {
-			return 0, 0, fmt.Errorf("failed to parse offset time: invalid offset hour format")
-		}
-
-		mm, err := strconv.Atoi(s[12:14])
-		if err != nil {
-			return 0, 0, fmt.Errorf("failed to parse offset time: invalid offset minute format")
-		}
-
-		offsetMinutes = sign * (hh*60 + mm)
-	}
-
-	return secondsOfDay, offsetMinutes, nil
 }
 
 // CreateProvider creates a timezone Provider from given zones and version.
