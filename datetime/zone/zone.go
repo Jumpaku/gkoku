@@ -99,7 +99,7 @@ func collectRuledTransitions(rules []Rule, minYear, maxYear int) []Transition {
 }
 
 func (z Zone) transitionsBetween(beginAt, endAt gkoku.Instant) []Transition {
-	ts := append([]Transition{}, z.transitions...)
+	ts := z.transitions
 	n := len(ts)
 	if n == 0 || beginAt.After(endAt) {
 		return []Transition{}
@@ -107,8 +107,7 @@ func (z Zone) transitionsBetween(beginAt, endAt gkoku.Instant) []Transition {
 
 	var narrowed []Transition
 	idx := sort.Search(n, func(i int) bool {
-		t := ts[i]
-		return beginAt.Cmp(t.TransitionTimestamp) <= 0
+		return beginAt.Cmp(ts[i].TransitionTimestamp) <= 0
 	})
 	for ; idx < n; idx++ {
 		t := ts[idx]
@@ -117,6 +116,30 @@ func (z Zone) transitionsBetween(beginAt, endAt gkoku.Instant) []Transition {
 		}
 
 		narrowed = append(narrowed, t)
+	}
+
+	if len(z.rules) == 0 {
+		return narrowed
+	}
+
+	if len(narrowed) > 0 {
+		if last := narrowed[len(narrowed)-1].TransitionTimestamp; beginAt.Cmp(last) < 0 {
+			beginAt = last
+		}
+	}
+
+	minYear, _, _ := datetime.FromInstant(beginAt, datetime.MinOffsetMinutes).Date().YyyyMmDd()
+	maxYear, _, _ := datetime.FromInstant(endAt, datetime.MaxOffsetMinutes).Date().YyyyMmDd()
+	for _, t := range collectRuledTransitions(z.rules, minYear, maxYear) {
+		if t.TransitionTimestamp.Cmp(beginAt) < 0 {
+			continue
+		}
+		if t.TransitionTimestamp.Cmp(endAt) > 0 {
+			break
+		}
+		if len(narrowed) == 0 || narrowed[len(narrowed)-1].TransitionTimestamp.Cmp(t.TransitionTimestamp) < 0 {
+			narrowed = append(narrowed, t)
+		}
 	}
 
 	return narrowed

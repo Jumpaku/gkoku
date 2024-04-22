@@ -64,6 +64,50 @@ func TestZonedDateTime_InstantCandidates(t *testing.T) {
 			sut:  NewZonedDateTime(dateOf(`2023-07-01`), timeOf(`12:00:00`), getZone(`Europe/Zurich`)),
 			want: []gkoku.Instant{instantOf(`2023-07-01T12:00:00+02:00`)},
 		},
+
+		// Gap
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-03-26`), timeOf(`01:30:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-03-26T01:30:00+01:00`)},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-03-26`), timeOf(`02:00:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-03-26`), timeOf(`02:30:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-03-26`), timeOf(`03:00:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-03-26T03:00:00+02:00`)},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-03-26`), timeOf(`03:30:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-03-26T03:30:00+02:00`)},
+		},
+
+		// Overlap
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-10-29`), timeOf(`01:30:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-10-29T01:30:00+02:00`)},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-10-29`), timeOf(`02:00:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-10-29T02:00:00+02:00`), instantOf(`2023-10-29T02:00:00+01:00`)},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-10-29`), timeOf(`02:30:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-10-29T02:30:00+02:00`), instantOf(`2023-10-29T02:30:00+01:00`)},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-10-29`), timeOf(`03:00:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-10-29T03:00:00+01:00`)},
+		},
+		{
+			sut:  NewZonedDateTime(dateOf(`2023-10-29`), timeOf(`03:30:00`), getZone(`Europe/Zurich`)),
+			want: []gkoku.Instant{instantOf(`2023-10-29T03:30:00+01:00`)},
+		},
 	}
 
 	for _, tt := range tests {
