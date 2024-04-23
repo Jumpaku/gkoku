@@ -1,53 +1,49 @@
 # tokiope
 
-tokiope (gee-koh-koo) is a Go library that provides basic time operations.
+An alternative Go library for basic time operations.
+
 
 ## Types overview
 
-- package `tokiope`
+- package `tokiope` provides basic types to handle temporal values.
     - `Instant` represents a point on the time series, which is compatible with the UNIX time seconds.
     - `Duration` represents an amount of a difference between two instants.
-    - `Clock` provides instants.
+    - `Clock` obtains current instants.
 
-- package `tokiope/date`
+- package `tokiope/date` provides types to represent calendrical values.
     - `Date` represents a day on the calendar in the format of `yyyy-mm-dd`, `yyyy-Www-dd`, or `yyyy-ddd`.
     - `YearMonth` represents a month on the calendar in the format of `yyyy-mm`.
     - `YearWeek` represents a week on the calendar in the format of `yyyy-Www`.
     - `Year` represents a year on the calendar in the format of `yyyy`.
 
-- package `tokiope/date/iter`
+- package `tokiope/date/iter` provides iterators to iterate on calendar.
     - `DateIterator` iterates days on the calendar.
     - `YearMonthIterator` iterates months on the calendar.
     - `YearWeekIterator` iterates weeks on the calendar.
     - `YearIterator` iterates years on the calendar.
 
-- package `tokiope/datetime`
-    - `OffsetDateTime` represents an instant by a combination of date and time with offset.
+- package `tokiope/datetime` provides types to represent a date and a time.
+    - `OffsetDateTime` represents an instant as a combination of date and time with offset.
 
 - package `tokiope/datetime/zone`
-    - `ZonedDateTime` represents a combination date and time with a timezone.
-    - `Zone` represents a timezone that is a mapping from timestamps of instants to an offset and has a timezone ID.
+    - `ZonedDateTime` represents a combination a date and a time with a timezone.
+    - `Zone` represents a timezone that is a mapping from instants to offsets and has a timezone ID.
     - `Provider` provides timezones based on the information of the IANA timezone database.
-
-
-## Avoid bugs by types design
 
 
 ## Motivation
 
-This library wraps the standard `time` package and provides a type safe API to handle date and time.
+`tokiope` provides a typed framework that is designed to avoid mistakes on time operations:
 
-## Definition
+### Examples of mistakes
 
-- A timestamp is a point on the time axis.
-- A duration is the amount of the difference between two timestamps.
+- Implicit use of local timezones that depends on environments.
+- Ambiguous calendrical operations.
+- Ignoring leap years on calendrical operations.
+- Saving datetimes of events that occurred in the past without offsets at those instants.
+- Saving timestamps of events that scheduled in the future.
+- Ignoring daylight saving times on conversions from zoned datetimes to timestamps.
 
-- A date is a representation of a day according to a calendar, which consists of year, month, and day.
-- A time of day is a combination of hour, minute, and second.
-- A datetime is a combination of a date and a time of day.
-
-- A timezone is a collection of offsets assigned based on region.
-- An offset is the amount of difference from a datetime in UTC to a datetime of a region.
 
 ## Mainly used types
 
@@ -73,10 +69,21 @@ vary due to changes of rules.
 
 `DateTimePeriod` represents the amount of the difference between two datetime.
 
-## Conversion
+
+## Operations
+
+### Instant-based operations
+
+
+
+### Calendrical operations
+
+
+
+### Conversions
 
 `OffsetDateTime` can always be converted to `Instant`.
-With an offset, `Instant` can be converted to `OffsetDateTime`.
 
-With a timestamp, `ZonedDateTime` can be converted to `Instant` using obtained offset at the timestamp.
+With an offset, `Instant` can always be converted to `OffsetDateTime`.
+
 With a timezone, `Instant` can be converted to `ZonedDateTime`.
