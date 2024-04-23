@@ -1,9 +1,9 @@
 package zone
 
 import (
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/datetime"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/datetime"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -27,7 +27,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1711963230, 0), /* 2024-04-01T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1711963230, 0), /* 2024-04-01T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -44,7 +44,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1712049630, 0), /* 2024-04-02T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1712049630, 0), /* 2024-04-02T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -61,7 +61,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1712136030, 0), /* 2024-04-03T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1712136030, 0), /* 2024-04-03T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -78,7 +78,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1711617630, 0), /* 2024-03-28T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1711617630, 0), /* 2024-03-28T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -95,7 +95,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1711704030, 0), /* 2024-03-29T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1711704030, 0), /* 2024-03-29T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -112,7 +112,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1711790430, 0), /* 2024-03-30T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1711790430, 0), /* 2024-03-30T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -129,7 +129,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1711876830, 0), /* 2024-03-31T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1711876830, 0), /* 2024-03-31T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -146,7 +146,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1711926000, 0), /* 2024-04-01T00:00:00+01:00 */
+				TransitionTimestamp: tokiope.Unix(1711926000, 0), /* 2024-04-01T00:00:00+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -163,7 +163,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1707038430, 0), /* 2024-02-04T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1707038430, 0), /* 2024-02-04T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -180,7 +180,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1709457630, 0), /* 2024-03-03T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1709457630, 0), /* 2024-03-03T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -197,7 +197,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1709457630, 0), /* 2024-03-03T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1709457630, 0), /* 2024-03-03T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -214,7 +214,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2024,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1709457630, 0), /* 2024-03-03T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1709457630, 0), /* 2024-03-03T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -231,7 +231,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2023,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1678008030, 0), /* 2023-03-05T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1678008030, 0), /* 2023-03-05T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},
@@ -248,7 +248,7 @@ func TestRule_Transition(t *testing.T) {
 			}),
 			in: 2023,
 			want: Transition{
-				TransitionTimestamp: gkoku.Unix(1678008030, 0), /* 2023-03-05T10:20:30+01:00 */
+				TransitionTimestamp: tokiope.Unix(1678008030, 0), /* 2023-03-05T10:20:30+01:00 */
 				OffsetMinutesBefore: 60,
 				OffsetMinutesAfter:  -60,
 			},

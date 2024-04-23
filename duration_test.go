@@ -1,11 +1,11 @@
-package gkoku_test
+package tokiope_test
 
 import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	. "github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	. "github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	"testing"
 )
 

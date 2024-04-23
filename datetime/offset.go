@@ -2,7 +2,7 @@ package datetime
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku"
+	"github.com/Jumpaku/tokiope"
 	"regexp"
 	"strconv"
 	"strings"
@@ -70,13 +70,13 @@ func FormatOffset(offset OffsetMinutes) string {
 
 var _ interface {
 	String() string
-	AddTo(i gkoku.Instant) gkoku.Instant
+	AddTo(i tokiope.Instant) tokiope.Instant
 } = OffsetMinutes(0)
 
 func (o OffsetMinutes) String() string {
 	return FormatOffset(o)
 }
 
-func (o OffsetMinutes) AddTo(i gkoku.Instant) gkoku.Instant {
-	return i.Add(gkoku.Minutes(int64(o)))
+func (o OffsetMinutes) AddTo(i tokiope.Instant) tokiope.Instant {
+	return i.Add(tokiope.Minutes(int64(o)))
 }

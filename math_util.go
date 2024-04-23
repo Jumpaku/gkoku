@@ -1,8 +1,8 @@
-package gkoku
+package tokiope
 
 import (
 	"errors"
-	"github.com/Jumpaku/gkoku/internal/exact"
+	"github.com/Jumpaku/tokiope/internal/exact"
 )
 
 func divFloor(x, y int64) (d int64, m int64, state State) {

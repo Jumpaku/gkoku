@@ -1,6 +1,6 @@
 package iter
 
-import "github.com/Jumpaku/gkoku/date"
+import "github.com/Jumpaku/tokiope/date"
 
 type YearWeekIterator interface {
 	Get() date.YearWeek

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	. "github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/internal/tests"
+	. "github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/internal/tests"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

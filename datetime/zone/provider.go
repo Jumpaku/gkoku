@@ -3,10 +3,10 @@ package zone
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/datetime"
 	"github.com/Jumpaku/go-assert"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/datetime"
 	"slices"
 	"strings"
 	"time"
@@ -33,7 +33,7 @@ func LoadProvider(tzotJSONBytes []byte, version string) (Provider, error) {
 			}
 
 			transitions = append(transitions, Transition{
-				TransitionTimestamp: gkoku.Unix(t.Unix(), 0),
+				TransitionTimestamp: tokiope.Unix(t.Unix(), 0),
 				OffsetMinutesBefore: datetime.OffsetMinutes(tj.OffsetSecondsBefore / 60),
 				OffsetMinutesAfter:  datetime.OffsetMinutes(tj.OffsetSecondsAfter / 60),
 			})

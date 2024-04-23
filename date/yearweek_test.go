@@ -4,10 +4,10 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/internal/tests"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
-	calendar_test "github.com/Jumpaku/gkoku/internal/tests/date"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/internal/tests"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
+	calendar_test "github.com/Jumpaku/tokiope/internal/tests/date"
 	"testing"
 )
 

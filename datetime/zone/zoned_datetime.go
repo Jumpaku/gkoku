@@ -2,9 +2,9 @@ package zone
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/datetime"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/datetime"
 	"slices"
 )
 
@@ -13,7 +13,7 @@ type ZonedDateTime interface {
 	Time() datetime.Time
 	Zone() Zone
 	String() string
-	InstantCandidates() []gkoku.Instant
+	InstantCandidates() []tokiope.Instant
 }
 
 func NewZonedDateTime(date date.Date, time datetime.Time, zone Zone) ZonedDateTime {
@@ -46,7 +46,7 @@ func (d zonedDateTime) Time() datetime.Time {
 	return d.time
 }
 
-func (d zonedDateTime) InstantCandidates() []gkoku.Instant {
+func (d zonedDateTime) InstantCandidates() []tokiope.Instant {
 	tu := datetime.NewOffsetDateTime(d.Date(), d.Time(), datetime.OffsetMinutes(0)).Instant()
 	tlo := datetime.MinOffsetMinutes.AddTo(tu)
 	thi := datetime.MaxOffsetMinutes.AddTo(tu)
@@ -54,10 +54,10 @@ func (d zonedDateTime) InstantCandidates() []gkoku.Instant {
 	ts := z.transitionsBetween(tlo, thi)
 	if len(ts) == 0 {
 		offset := z.FindOffset(tu)
-		return []gkoku.Instant{datetime.NewOffsetDateTime(d.Date(), d.Time(), offset).Instant()}
+		return []tokiope.Instant{datetime.NewOffsetDateTime(d.Date(), d.Time(), offset).Instant()}
 	}
 
-	var candidates []gkoku.Instant
+	var candidates []tokiope.Instant
 	{
 		t := ts[0]
 		c := datetime.NewOffsetDateTime(d.Date(), d.Time(), t.OffsetMinutesBefore).Instant()
@@ -80,8 +80,8 @@ func (d zonedDateTime) InstantCandidates() []gkoku.Instant {
 		}
 	}
 
-	slices.SortFunc(candidates, gkoku.Instant.Cmp)
-	uniqCandidates := []gkoku.Instant{}
+	slices.SortFunc(candidates, tokiope.Instant.Cmp)
+	uniqCandidates := []tokiope.Instant{}
 	for _, c := range candidates {
 		if len(uniqCandidates) == 0 || uniqCandidates[len(uniqCandidates)-1].Cmp(c) < 0 {
 			uniqCandidates = append(uniqCandidates, c)

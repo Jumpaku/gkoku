@@ -1,10 +1,10 @@
 package zone_test
 
 import (
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/datetime"
-	zone2 "github.com/Jumpaku/gkoku/datetime/zone"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/datetime"
+	zone2 "github.com/Jumpaku/tokiope/datetime/zone"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	"testing"
 )
 
@@ -46,8 +46,8 @@ func TestCreateFixed(t *testing.T) {
 		t.Run(tt.id, func(t *testing.T) {
 			got := zone2.CreateFixed(tt.id, tt.offset)
 			assert.Equal(t, tt.id, got.ID())
-			assert.Equal(t, tt.offset, got.FindOffset(gkoku.MinInstant))
-			assert.Equal(t, tt.offset, got.FindOffset(gkoku.MaxInstant))
+			assert.Equal(t, tt.offset, got.FindOffset(tokiope.MinInstant))
+			assert.Equal(t, tt.offset, got.FindOffset(tokiope.MaxInstant))
 		})
 	}
 }
@@ -64,67 +64,67 @@ func TestZone_FindOffset(t *testing.T) {
 
 	tests := []struct {
 		sut  zone2.Zone
-		in   gkoku.Instant
+		in   tokiope.Instant
 		want datetime.OffsetMinutes
 	}{
 		{
 			sut:  load("Asia/Tokyo"),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: 540,
 		},
 		{
 			sut:  load("Pacific/Apia"),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: -660,
 		},
 		{
 			sut:  load("Europe/Zurich"),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: 60,
 		},
 		{
 			sut:  load("Zulu"),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: 0,
 		},
 		{
 			sut:  zone2.Create("example1", nil, nil),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: 0,
 		},
 		{
 			sut: zone2.Create("example2", []zone2.Transition{
-				{TransitionTimestamp: gkoku.MinInstant, OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
+				{TransitionTimestamp: tokiope.MinInstant, OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
 			}, nil),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: 1,
 		},
 		{
 			sut: zone2.Create("example3", []zone2.Transition{
-				{TransitionTimestamp: gkoku.MaxInstant, OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
+				{TransitionTimestamp: tokiope.MaxInstant, OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
 			}, nil),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: -1,
 		},
 		{
 			sut: zone2.Create("example4", []zone2.Transition{
-				{TransitionTimestamp: gkoku.Unix(946684800, 0), OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
+				{TransitionTimestamp: tokiope.Unix(946684800, 0), OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
 			}, nil),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: 1,
 		},
 		{
 			sut: zone2.Create("example5", []zone2.Transition{
-				{TransitionTimestamp: gkoku.Unix(946684799, 0), OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
+				{TransitionTimestamp: tokiope.Unix(946684799, 0), OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
 			}, nil),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: 1,
 		},
 		{
 			sut: zone2.Create("example6", []zone2.Transition{
-				{TransitionTimestamp: gkoku.Unix(946684801, 0), OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
+				{TransitionTimestamp: tokiope.Unix(946684801, 0), OffsetMinutesBefore: -1, OffsetMinutesAfter: 1},
 			}, nil),
-			in:   gkoku.Unix(946684800, 0),
+			in:   tokiope.Unix(946684800, 0),
 			want: -1,
 		},
 	}

@@ -2,9 +2,9 @@ package datetime_test
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku"
-	. "github.com/Jumpaku/gkoku/datetime"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	"github.com/Jumpaku/tokiope"
+	. "github.com/Jumpaku/tokiope/datetime"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	"testing"
 )
 
@@ -131,58 +131,58 @@ func TestFormatOffset(t *testing.T) {
 func TestOffsetMinutes_AddTo(t *testing.T) {
 	tests := []struct {
 		sut  OffsetMinutes
-		in   gkoku.Instant
-		want gkoku.Instant
+		in   tokiope.Instant
+		want tokiope.Instant
 	}{
 		{
 			sut:  0,
-			in:   gkoku.Unix(1, 1),
-			want: gkoku.Unix(1, 1),
+			in:   tokiope.Unix(1, 1),
+			want: tokiope.Unix(1, 1),
 		},
 		{
 			sut:  1,
-			in:   gkoku.Unix(1, 1),
-			want: gkoku.Unix(61, 1),
+			in:   tokiope.Unix(1, 1),
+			want: tokiope.Unix(61, 1),
 		},
 		{
 			sut:  -1,
-			in:   gkoku.Unix(1, 1),
-			want: gkoku.Unix(-59, 1),
+			in:   tokiope.Unix(1, 1),
+			want: tokiope.Unix(-59, 1),
 		},
 		{
 			sut:  60,
-			in:   gkoku.Unix(1, 1),
-			want: gkoku.Unix(3601, 1),
+			in:   tokiope.Unix(1, 1),
+			want: tokiope.Unix(3601, 1),
 		},
 		{
 			sut:  -60,
-			in:   gkoku.Unix(1, 1),
-			want: gkoku.Unix(-3599, 1),
+			in:   tokiope.Unix(1, 1),
+			want: tokiope.Unix(-3599, 1),
 		},
 		{
 			sut:  0,
-			in:   gkoku.Unix(-1, 1),
-			want: gkoku.Unix(-1, 1),
+			in:   tokiope.Unix(-1, 1),
+			want: tokiope.Unix(-1, 1),
 		},
 		{
 			sut:  1,
-			in:   gkoku.Unix(-1, 1),
-			want: gkoku.Unix(59, 1),
+			in:   tokiope.Unix(-1, 1),
+			want: tokiope.Unix(59, 1),
 		},
 		{
 			sut:  -1,
-			in:   gkoku.Unix(-1, 1),
-			want: gkoku.Unix(-61, 1),
+			in:   tokiope.Unix(-1, 1),
+			want: tokiope.Unix(-61, 1),
 		},
 		{
 			sut:  60,
-			in:   gkoku.Unix(-1, 1),
-			want: gkoku.Unix(3599, 1),
+			in:   tokiope.Unix(-1, 1),
+			want: tokiope.Unix(3599, 1),
 		},
 		{
 			sut:  -60,
-			in:   gkoku.Unix(-1, 1),
-			want: gkoku.Unix(-3601, 1),
+			in:   tokiope.Unix(-1, 1),
+			want: tokiope.Unix(-3601, 1),
 		},
 	}
 	for _, tt := range tests {

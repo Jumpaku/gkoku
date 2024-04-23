@@ -1,6 +1,37 @@
-# gkoku
+# tokiope
 
-gkoku (gee-koh-koo) is a Go library that provides basic time operations.
+tokiope (gee-koh-koo) is a Go library that provides basic time operations.
+
+## Types overview
+
+- package `tokiope`
+    - `Instant` represents a point on the time series, which is compatible with the UNIX time seconds.
+    - `Duration` represents an amount of a difference between two instants.
+    - `Clock` provides instants.
+
+- package `tokiope/date`
+    - `Date` represents a day on the calendar in the format of `yyyy-mm-dd`, `yyyy-Www-dd`, or `yyyy-ddd`.
+    - `YearMonth` represents a month on the calendar in the format of `yyyy-mm`.
+    - `YearWeek` represents a week on the calendar in the format of `yyyy-Www`.
+    - `Year` represents a year on the calendar in the format of `yyyy`.
+
+- package `tokiope/date/iter`
+    - `DateIterator` iterates days on the calendar.
+    - `YearMonthIterator` iterates months on the calendar.
+    - `YearWeekIterator` iterates weeks on the calendar.
+    - `YearIterator` iterates years on the calendar.
+
+- package `tokiope/datetime`
+    - `OffsetDateTime` represents an instant by a combination of date and time with offset.
+
+- package `tokiope/datetime/zone`
+    - `ZonedDateTime` represents a combination date and time with a timezone.
+    - `Zone` represents a timezone that is a mapping from timestamps of instants to an offset and has a timezone ID.
+    - `Provider` provides timezones based on the information of the IANA timezone database.
+
+
+## Avoid bugs by types design
+
 
 ## Motivation
 
@@ -31,7 +62,8 @@ It is useful for the datetime operations according to the calendar.
 
 `ZonedDateTime` represents a datetime (the timestamp may not be specific) with a timezone.
 It can be used to specify datetime (according to the calendar) of events scheduled in the future at specific regions.
-Note that you should specify a datetime in the future with not an offset but a timezone because offset in the future may vary due to changes of rules.
+Note that you should specify a datetime in the future with not an offset but a timezone because offset in the future may
+vary due to changes of rules.
 
 `Offset` represents a offset.
 

@@ -2,7 +2,7 @@ package date
 
 import (
 	"cmp"
-	"github.com/Jumpaku/gkoku/internal/exact"
+	"github.com/Jumpaku/tokiope/internal/exact"
 )
 
 type YearMonth struct {

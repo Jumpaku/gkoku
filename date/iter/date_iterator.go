@@ -1,6 +1,6 @@
 package iter
 
-import "github.com/Jumpaku/gkoku/date"
+import "github.com/Jumpaku/tokiope/date"
 
 type DateIterator interface {
 	Get() date.Date

@@ -1,8 +1,8 @@
 package iter
 
 import (
-	"github.com/Jumpaku/gkoku/date"
-	calendar_test "github.com/Jumpaku/gkoku/internal/tests/date"
+	"github.com/Jumpaku/tokiope/date"
+	calendar_test "github.com/Jumpaku/tokiope/internal/tests/date"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

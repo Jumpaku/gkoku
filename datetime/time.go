@@ -2,8 +2,8 @@ package datetime
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku"
 	"github.com/Jumpaku/go-assert"
+	"github.com/Jumpaku/tokiope"
 	"regexp"
 	"strconv"
 	"strings"
@@ -30,13 +30,13 @@ func TimeOf(hour, minute, second, nano int) Time {
 }
 
 func TimeFromSeconds(secondsOfDay, nano int) Time {
-	assert.Params(0 <= secondsOfDay && secondsOfDay <= gkoku.SecondsPerDay, "secondsOfDay must be in [0,%d]: %d", gkoku.SecondsPerDay, secondsOfDay)
+	assert.Params(0 <= secondsOfDay && secondsOfDay <= tokiope.SecondsPerDay, "secondsOfDay must be in [0,%d]: %d", tokiope.SecondsPerDay, secondsOfDay)
 	assert.Params(0 <= nano && nano < 1_000_000_000, "nano must be in [0,1_000_000_000): %d", nano)
-	if secondsOfDay == gkoku.SecondsPerDay {
+	if secondsOfDay == tokiope.SecondsPerDay {
 		assert.Params(nano == 0, "nano must be 0 if hour is 24: %d", nano)
 	}
-	wholeMinutes, second := secondsOfDay/gkoku.SecondsPerMinute, secondsOfDay%gkoku.SecondsPerMinute
-	hour, minute := wholeMinutes/gkoku.MinutesPerHour, wholeMinutes%gkoku.MinutesPerHour
+	wholeMinutes, second := secondsOfDay/tokiope.SecondsPerMinute, secondsOfDay%tokiope.SecondsPerMinute
+	hour, minute := wholeMinutes/tokiope.MinutesPerHour, wholeMinutes%tokiope.MinutesPerHour
 	return Time{hour: hour, minute: minute, second: second, nano: nano}
 }
 

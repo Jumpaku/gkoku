@@ -1,13 +1,12 @@
-package gkoku_test
+package tokiope_test
 
 import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	. "github.com/Jumpaku/gkoku"
+	. "github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	"testing"
-
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
 )
 
 func equalInstant(t *testing.T, want Instant, got Instant) {

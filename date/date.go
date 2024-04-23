@@ -3,8 +3,8 @@ package date
 import (
 	"cmp"
 	"fmt"
-	"github.com/Jumpaku/gkoku/internal/exact"
 	"github.com/Jumpaku/go-assert"
+	"github.com/Jumpaku/tokiope/internal/exact"
 )
 
 // Date . The zero value represents 0001-01-01

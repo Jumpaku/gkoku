@@ -1,4 +1,4 @@
-package gkoku_test
+package tokiope_test
 
 //go:generate go run ./internal/cmd/testcases/duration/abs/main.go testdata/duration_abs.txt
 //go:generate go run ./internal/cmd/testcases/duration/sign/main.go testdata/duration_sign.txt

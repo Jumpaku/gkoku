@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku/internal/cmd/testcases"
+	"github.com/Jumpaku/tokiope/internal/cmd/testcases"
 	"log"
 	"math"
 	"math/big"
 	"math/rand"
 	"os"
 
-	"github.com/Jumpaku/gkoku/internal/console"
+	"github.com/Jumpaku/tokiope/internal/console"
 )
 
 func main() {

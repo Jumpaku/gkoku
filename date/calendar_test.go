@@ -1,7 +1,7 @@
 package date_test
 
 import (
-	"github.com/Jumpaku/gkoku/date"
+	"github.com/Jumpaku/tokiope/date"
 	"time"
 )
 

@@ -1,7 +1,7 @@
 package yearweek
 
 import (
-	"github.com/Jumpaku/gkoku/date/internal/cmd/testcases/date"
+	"github.com/Jumpaku/tokiope/date/internal/cmd/testcases/date"
 )
 
 type YearWeekField struct {

@@ -1,8 +1,8 @@
 package datetime_test
 
 import (
-	. "github.com/Jumpaku/gkoku/datetime"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	. "github.com/Jumpaku/tokiope/datetime"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	"testing"
 )
 

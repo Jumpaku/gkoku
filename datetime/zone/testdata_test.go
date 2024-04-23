@@ -2,7 +2,7 @@ package zone_test
 
 import (
 	_ "embed"
-	"github.com/Jumpaku/gkoku/datetime/zone"
+	"github.com/Jumpaku/tokiope/datetime/zone"
 )
 
 //go:embed testdata/tzot_test.json

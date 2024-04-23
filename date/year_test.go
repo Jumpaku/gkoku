@@ -2,10 +2,10 @@ package date_test
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku/date"
-	test_date "github.com/Jumpaku/gkoku/date/internal/cmd/testcases/date"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
-	calendar_test "github.com/Jumpaku/gkoku/internal/tests/date"
+	"github.com/Jumpaku/tokiope/date"
+	test_date "github.com/Jumpaku/tokiope/date/internal/cmd/testcases/date"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
+	calendar_test "github.com/Jumpaku/tokiope/internal/tests/date"
 	"testing"
 )
 

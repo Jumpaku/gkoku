@@ -2,9 +2,9 @@ package datetime
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/internal/exact"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/internal/exact"
 	"regexp"
 	"strings"
 )
@@ -14,7 +14,7 @@ type OffsetDateTime interface {
 	Offset() OffsetMinutes
 	Date() date.Date
 	Time() Time
-	Instant() gkoku.Instant
+	Instant() tokiope.Instant
 }
 
 func NewOffsetDateTime(date date.Date, time Time, offset OffsetMinutes) OffsetDateTime {
@@ -25,9 +25,9 @@ func NewOffsetDateTime(date date.Date, time Time, offset OffsetMinutes) OffsetDa
 	}
 }
 
-func FromInstant(at gkoku.Instant, offset OffsetMinutes) OffsetDateTime {
+func FromInstant(at tokiope.Instant, offset OffsetMinutes) OffsetDateTime {
 	sec, nano := offset.AddTo(at).Unix()
-	unixDays, secondsOfDay, _ := exact.DivFloor(sec, gkoku.SecondsPerDay)
+	unixDays, secondsOfDay, _ := exact.DivFloor(sec, tokiope.SecondsPerDay)
 	date := date.UnixDay(unixDays)
 	time := TimeFromSeconds(int(secondsOfDay), int(nano))
 	return NewOffsetDateTime(date, time, offset)
@@ -87,14 +87,14 @@ func (d offsetDateTime) Time() Time {
 	return d.time
 }
 
-func (d offsetDateTime) Instant() gkoku.Instant {
+func (d offsetDateTime) Instant() tokiope.Instant {
 	t := d.Time()
 	o, h, m, s, n := int64(d.Offset()), int64(t.Hour()), int64(t.Minute()), int64(t.Second()), int64(t.Nano())
-	secondsOfDay := gkoku.Hours(h).Add(gkoku.Minutes(m)).Add(gkoku.Seconds(s, n))
+	secondsOfDay := tokiope.Hours(h).Add(tokiope.Minutes(m)).Add(tokiope.Seconds(s, n))
 
-	offset := gkoku.Minutes(o)
+	offset := tokiope.Minutes(o)
 
 	unixDays := d.Date().UnixDay()
 
-	return gkoku.Unix(gkoku.Days(unixDays).Add(secondsOfDay).Sub(offset).Seconds())
+	return tokiope.Unix(tokiope.Days(unixDays).Add(secondsOfDay).Sub(offset).Seconds())
 }

@@ -1,8 +1,8 @@
 package date
 
 import (
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	"testing"
 )
 

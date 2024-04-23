@@ -4,9 +4,9 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	. "github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/internal/tests"
-	calendar_test "github.com/Jumpaku/gkoku/internal/tests/date"
+	. "github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/internal/tests"
+	calendar_test "github.com/Jumpaku/tokiope/internal/tests/date"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

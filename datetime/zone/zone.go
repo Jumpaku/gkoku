@@ -2,9 +2,9 @@ package zone
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/datetime"
 	"github.com/Jumpaku/go-assert"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/datetime"
 	"github.com/samber/lo"
 	"slices"
 	"sort"
@@ -17,7 +17,7 @@ type Zone struct {
 }
 
 type Transition struct {
-	TransitionTimestamp gkoku.Instant
+	TransitionTimestamp tokiope.Instant
 	OffsetMinutesBefore datetime.OffsetMinutes
 	OffsetMinutesAfter  datetime.OffsetMinutes
 }
@@ -38,14 +38,14 @@ func Create(zoneID string, transitions []Transition, rules []Rule) Zone {
 func CreateFixed(zoneID string, offset datetime.OffsetMinutes) Zone {
 	return Create(zoneID, []Transition{
 		{
-			TransitionTimestamp: gkoku.MinInstant,
+			TransitionTimestamp: tokiope.MinInstant,
 			OffsetMinutesBefore: offset,
 			OffsetMinutesAfter:  offset,
 		},
 	}, nil)
 }
 
-func (z Zone) FindOffset(at gkoku.Instant) datetime.OffsetMinutes {
+func (z Zone) FindOffset(at tokiope.Instant) datetime.OffsetMinutes {
 	ts, rs := z.transitions, z.rules
 	if len(ts) == 0 && len(rs) == 0 {
 		return 0
@@ -68,7 +68,7 @@ func (z Zone) FindOffset(at gkoku.Instant) datetime.OffsetMinutes {
 	return findOffset(rts, at)
 }
 
-func findOffset(transitions []Transition, at gkoku.Instant) datetime.OffsetMinutes {
+func findOffset(transitions []Transition, at tokiope.Instant) datetime.OffsetMinutes {
 	n := len(transitions)
 	if n == 0 {
 		return 0
@@ -98,7 +98,7 @@ func collectRuledTransitions(rules []Rule, minYear, maxYear int) []Transition {
 	return ts
 }
 
-func (z Zone) transitionsBetween(beginAt, endAt gkoku.Instant) []Transition {
+func (z Zone) transitionsBetween(beginAt, endAt tokiope.Instant) []Transition {
 	ts := z.transitions
 	n := len(ts)
 	if n == 0 || beginAt.After(endAt) {

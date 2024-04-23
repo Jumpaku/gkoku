@@ -1,4 +1,4 @@
-package gkoku
+package tokiope
 
 type Instant struct {
 	unixSeconds Duration

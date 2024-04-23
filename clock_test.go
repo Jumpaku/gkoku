@@ -1,8 +1,8 @@
-package gkoku
+package tokiope
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	assert2 "github.com/stretchr/testify/assert"
 	"testing"
 	"time"

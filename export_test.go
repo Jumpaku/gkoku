@@ -1,4 +1,4 @@
-package gkoku
+package tokiope
 
 func NGDuration() Duration {
 	return Duration{state: StateOverflow}

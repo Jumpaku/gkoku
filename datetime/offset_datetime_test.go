@@ -4,11 +4,11 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/date"
-	. "github.com/Jumpaku/gkoku/datetime"
-	"github.com/Jumpaku/gkoku/internal/tests"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/date"
+	. "github.com/Jumpaku/tokiope/datetime"
+	"github.com/Jumpaku/tokiope/internal/tests"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	assert2 "github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -424,7 +424,7 @@ func TestFromInstant(t *testing.T) {
 
 	for number, testcase := range testcases {
 		t.Run(fmt.Sprintf(`%d`, number), func(t *testing.T) {
-			got := FromInstant(gkoku.Unix(testcase.inUnix, 0), testcase.inOffset)
+			got := FromInstant(tokiope.Unix(testcase.inUnix, 0), testcase.inOffset)
 			gotY, gotM, gotD := got.Date().YyyyMmDd()
 			assert.Equal(t, testcase.wantYear, gotY)
 			assert.Equal(t, testcase.wantMonth, int(gotM))

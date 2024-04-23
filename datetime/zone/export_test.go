@@ -1,8 +1,8 @@
 package zone
 
 import (
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/datetime"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/datetime"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

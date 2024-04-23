@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku/internal/console"
+	"github.com/Jumpaku/tokiope/internal/console"
 	"log"
 	"math/rand"
 	"os"

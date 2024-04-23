@@ -1,9 +1,9 @@
 package zone
 
 import (
-	"github.com/Jumpaku/gkoku/date"
-	"github.com/Jumpaku/gkoku/date/iter"
-	"github.com/Jumpaku/gkoku/datetime"
+	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/date/iter"
+	"github.com/Jumpaku/tokiope/datetime"
 )
 
 type doNotImplement interface {

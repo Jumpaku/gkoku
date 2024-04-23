@@ -2,10 +2,10 @@ package zone_test
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku"
-	"github.com/Jumpaku/gkoku/datetime"
-	zone2 "github.com/Jumpaku/gkoku/datetime/zone"
-	"github.com/Jumpaku/gkoku/internal/tests/assert"
+	"github.com/Jumpaku/tokiope"
+	"github.com/Jumpaku/tokiope/datetime"
+	zone2 "github.com/Jumpaku/tokiope/datetime/zone"
+	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	assert2 "github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -99,11 +99,11 @@ func TestLoadProvider(t *testing.T) {
 			want: zone2.CreateProvider([]zone2.Zone{
 				zone2.Create("ExampleZone", []zone2.Transition{
 					{
-						TransitionTimestamp: gkoku.Unix(859683600, 0),
+						TransitionTimestamp: tokiope.Unix(859683600, 0),
 						OffsetMinutesBefore: datetime.OffsetMinutes(60),
 						OffsetMinutesAfter:  datetime.OffsetMinutes(120),
 					}, {
-						TransitionTimestamp: gkoku.Unix(877827600, 0),
+						TransitionTimestamp: tokiope.Unix(877827600, 0),
 						OffsetMinutesBefore: datetime.OffsetMinutes(120),
 						OffsetMinutesAfter:  datetime.OffsetMinutes(60),
 					},
@@ -185,9 +185,9 @@ func TestProvider_Get(t *testing.T) {
 		zone2.Create(`C`, []zone2.Transition{}, nil),
 		zone2.Create(`B`, nil, nil),
 		zone2.Create(`A`, []zone2.Transition{
-			{TransitionTimestamp: gkoku.Unix(10, 0), OffsetMinutesBefore: 1, OffsetMinutesAfter: 2},
-			{TransitionTimestamp: gkoku.Unix(20, 0), OffsetMinutesBefore: 2, OffsetMinutesAfter: 3},
-			{TransitionTimestamp: gkoku.Unix(30, 0), OffsetMinutesBefore: 3, OffsetMinutesAfter: 4},
+			{TransitionTimestamp: tokiope.Unix(10, 0), OffsetMinutesBefore: 1, OffsetMinutesAfter: 2},
+			{TransitionTimestamp: tokiope.Unix(20, 0), OffsetMinutesBefore: 2, OffsetMinutesAfter: 3},
+			{TransitionTimestamp: tokiope.Unix(30, 0), OffsetMinutesBefore: 3, OffsetMinutesAfter: 4},
 		}, nil),
 	}, `example`)
 

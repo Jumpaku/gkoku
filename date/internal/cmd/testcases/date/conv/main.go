@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/Jumpaku/gkoku/date/internal/cmd/testcases/date"
-	"github.com/Jumpaku/gkoku/internal/console"
+	"github.com/Jumpaku/tokiope/date/internal/cmd/testcases/date"
+	"github.com/Jumpaku/tokiope/internal/console"
 	"log"
 	"math/rand"
 	"os"
