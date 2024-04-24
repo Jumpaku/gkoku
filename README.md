@@ -85,5 +85,3 @@ vary due to changes of rules.
 `OffsetDateTime` can always be converted to `Instant`.
 
 With an offset, `Instant` can always be converted to `OffsetDateTime`.
-
-With a timezone, `Instant` can be converted to `ZonedDateTime`.
