@@ -10,16 +10,16 @@ import (
 	"sort"
 )
 
-type Zone struct {
-	id          string
-	transitions []Transition
-	rules       []Rule
-}
-
 type Transition struct {
 	TransitionTimestamp tokiope.Instant
 	OffsetMinutesBefore datetime.OffsetMinutes
 	OffsetMinutesAfter  datetime.OffsetMinutes
+}
+
+type Zone struct {
+	id          string
+	transitions []Transition
+	rules       []Rule
 }
 
 // Create creates a Zone with the given zone ID and transitions.
