@@ -94,7 +94,7 @@ Detailed API references are available at https://pkg.go.dev/github.com/Jumpaku/t
 
 ### Example Code
 
-Example code snippets demonstrating practical usage of `tokiope`'s functionalities are available at https://github.com/Jumpaku/tokiope/docs/example-code.md .
+Example code snippets demonstrating practical usage of `tokiope`'s functionalities are available at https://github.com/Jumpaku/tokiope/blob/main/docs/example-code.md .
 
 
 ## Design Policy
