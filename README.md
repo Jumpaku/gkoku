@@ -60,7 +60,6 @@ The `tokiope` package provides basic types to handle temporal values:
 
 - `Instant`: Represents an instantaneous point on the time-line, which is compatible with the UNIX time seconds.
 - `Duration`: Represents an amount of a difference between two instants.
-- `Clock`: Obtains current instants.
 
 The tokiope/date package provides types to represent values on the calendar:
 
@@ -95,7 +94,7 @@ Detailed API references are available at https://pkg.go.dev/github.com/Jumpaku/t
 
 ### Example Code
 
-Example code snippets demonstrating practical usage of `tokiope`'s functionalities are available at https://github.com/Jumpaku/tokiope/docs/examples-code.md .
+Example code snippets demonstrating practical usage of `tokiope`'s functionalities are available at https://github.com/Jumpaku/tokiope/docs/example-code.md .
 
 
 ## Design Policy
