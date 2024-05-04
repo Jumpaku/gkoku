@@ -67,7 +67,7 @@ An alternative Go library for basic time operations.
 
 ```go
 	od := datetime.NewOffsetDateTime(
-		date.YyyyMmDd(2000, 1, 1),
+		date.DateOfYMD(2000, 1, 1),
 		datetime.TimeOf(9, 0, 0, 0),
 		datetime.OffsetMinutes(9*60),
 	) // 2000-01-01T09:00:00+09:00
@@ -80,7 +80,7 @@ An alternative Go library for basic time operations.
 
 ```go
 	zd := zone.NewZonedDateTime(
-		date.YyyyMmDd(2000, 1, 1),
+		date.DateOfYMD(2000, 1, 1),
 		datetime.TimeOf(9, 0, 0, 0),
 		zone.CreateFixed("Asia/Tokyo", datetime.OffsetMinutes(9*60)),
 	) // 2000-01-01T09:00:00[Asia/Tokyo]
@@ -110,9 +110,9 @@ An alternative Go library for basic time operations.
 #### Calculate dates
 
 ```go
-	d1 := date.YyyyMmDd(2000, 1, 1)
-	d2 := date.YyyyMmDd(2000, 1, 2)
-	d3 := date.YyyyMmDd(2000, 1, 3)
+	d1 := date.DateOfYMD(2000, 1, 1)
+	d2 := date.DateOfYMD(2000, 1, 2)
+	d3 := date.DateOfYMD(2000, 1, 3)
 	days := 10
 	fmt.Println(d1.DaysUntil(d2))
 	fmt.Println(d3.Add(days))
@@ -126,7 +126,7 @@ An alternative Go library for basic time operations.
 #### Iterate on the calendar
 
 ```go
-	di := iter.OfDate(date.YyyyMmDd(2000, 1, 1))
+	di := iter.OfDate(date.DateOfYMD(2000, 1, 1))
 	di.Move(1)
 	fmt.Println(di.Get())
 

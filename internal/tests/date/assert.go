@@ -1,21 +1,21 @@
 package date
 
 import (
-	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/calendar"
 	"github.com/Jumpaku/tokiope/internal/tests/assert"
 	"testing"
 )
 
-func AssertEqualDate(t *testing.T, want date.Date, got date.Date) {
+func AssertEqualDate(t *testing.T, want calendar.Date, got calendar.Date) {
 	t.Helper()
-	wy, wm, wd := want.YyyyMmDd()
-	gy, gm, gd := got.YyyyMmDd()
+	wy, wm, wd := want.YMD()
+	gy, gm, gd := got.YMD()
 	assert.Equal(t, wy, gy)
 	assert.Equal(t, wm, gm)
 	assert.Equal(t, wd, gd)
 }
 
-func AssertEqualYearMonth(t *testing.T, want date.YearMonth, got date.YearMonth) {
+func AssertEqualYearMonth(t *testing.T, want calendar.YearMonth, got calendar.YearMonth) {
 	t.Helper()
 	wy, wm := want.YyyyMm()
 	gy, gm := got.YyyyMm()
@@ -24,7 +24,7 @@ func AssertEqualYearMonth(t *testing.T, want date.YearMonth, got date.YearMonth)
 
 }
 
-func AssertEqualYearWeek(t *testing.T, want date.YearWeek, got date.YearWeek) {
+func AssertEqualYearWeek(t *testing.T, want calendar.YearWeek, got calendar.YearWeek) {
 	t.Helper()
 	wy, ww := want.YyyyWw()
 	gy, gw := got.YyyyWw()

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/Jumpaku/go-assert"
 	"github.com/Jumpaku/tokiope"
-	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/calendar"
 	"github.com/Jumpaku/tokiope/datetime"
 	"slices"
 	"strings"
@@ -62,9 +62,9 @@ func LoadProvider(tzotJSONBytes []byte, version string) (Provider, error) {
 			rules = append(rules, rule{
 				OffsetMinutesBefore: datetime.OffsetMinutes(rj.OffsetSecondsBefore / 60),
 				OffsetMinutesAfter:  datetime.OffsetMinutes(rj.OffsetSecondsAfter / 60),
-				Month:               date.Month(rj.Month),
+				Month:               calendar.Month(rj.Month),
 				BaseDay:             rj.BaseDay,
-				DayOfWeek:           date.DayOfWeek(rj.DayOfWeek),
+				DayOfWeek:           calendar.DayOfWeek(rj.DayOfWeek),
 				TimeOfDay:           tod,
 				TimeOffsetMinutes:   om,
 			})

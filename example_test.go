@@ -3,8 +3,8 @@ package tokiope_test
 import (
 	"fmt"
 	"github.com/Jumpaku/tokiope"
-	"github.com/Jumpaku/tokiope/date"
-	"github.com/Jumpaku/tokiope/date/iter"
+	"github.com/Jumpaku/tokiope/calendar"
+	"github.com/Jumpaku/tokiope/calendar/iter"
 	"github.com/Jumpaku/tokiope/datetime"
 	"github.com/Jumpaku/tokiope/datetime/zone"
 )
@@ -25,7 +25,7 @@ func ExampleConvertInstantToOffsetDateTime() {
 
 func ExampleConvertOffsetDateTimeToInstant() {
 	od := datetime.NewOffsetDateTime(
-		date.YyyyMmDd(2000, 1, 1),
+		calendar.DateOfYMD(2000, 1, 1),
 		datetime.TimeOf(9, 0, 0, 0),
 		datetime.OffsetMinutes(9*60),
 	) // 2000-01-01T09:00:00+09:00
@@ -36,7 +36,7 @@ func ExampleConvertOffsetDateTimeToInstant() {
 
 func ExampleConvertZonedDateTimeToInstant() {
 	zd := zone.NewZonedDateTime(
-		date.YyyyMmDd(2000, 1, 1),
+		calendar.DateOfYMD(2000, 1, 1),
 		datetime.TimeOf(9, 0, 0, 0),
 		zone.CreateFixed("Asia/Tokyo", datetime.OffsetMinutes(9*60)),
 	) // 2000-01-01T09:00:00[Asia/Tokyo]
@@ -60,9 +60,9 @@ func ExampleInstantBasedOperations() {
 }
 
 func ExampleCalendarBasedOperations() {
-	d1 := date.YyyyMmDd(2000, 1, 1)
-	d2 := date.YyyyMmDd(2000, 1, 2)
-	d3 := date.YyyyMmDd(2000, 1, 3)
+	d1 := calendar.DateOfYMD(2000, 1, 1)
+	d2 := calendar.DateOfYMD(2000, 1, 2)
+	d3 := calendar.DateOfYMD(2000, 1, 3)
 	days := 10
 	fmt.Println(d1.DaysUntil(d2))
 	fmt.Println(d3.Add(days))
@@ -74,19 +74,19 @@ func ExampleCalendarBasedOperations() {
 }
 
 func ExampleCalendarBasedOperations_Iterator() {
-	di := iter.OfDate(date.YyyyMmDd(2000, 1, 1))
+	di := iter.OfDate(calendar.DateOfYMD(2000, 1, 1))
 	di.Move(1)
 	fmt.Println(di.Get())
 
-	ymi := iter.OfYearMonth(date.YearMonthOf(2000, 1))
+	ymi := iter.OfYearMonth(calendar.YearMonthOf(2000, 1))
 	ymi.Move(2)
 	fmt.Println(ymi.Get())
 
-	ywi := iter.OfYearWeek(date.YearWeekOf(2000, 1))
+	ywi := iter.OfYearWeek(calendar.YearWeekOf(2000, 1))
 	ywi.Move(3)
 	fmt.Println(ywi.Get())
 
-	yi := iter.OfYear(date.Year(2000))
+	yi := iter.OfYear(calendar.Year(2000))
 	yi.Move(4)
 	fmt.Println(yi.Get())
 

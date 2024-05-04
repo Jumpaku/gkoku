@@ -2,7 +2,7 @@ package zone_test
 
 import (
 	"github.com/Jumpaku/tokiope"
-	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/calendar"
 	. "github.com/Jumpaku/tokiope/datetime"
 	. "github.com/Jumpaku/tokiope/datetime/zone"
 	"github.com/Jumpaku/tokiope/internal/tests/assert"
@@ -15,8 +15,8 @@ func TestZonedDateTime_InstantCandidates(t *testing.T) {
 		d, _ := ParseOffsetDateTime(s)
 		return d.Instant()
 	}
-	dateOf := func(s string) date.Date {
-		d, _ := date.ParseDate(s, date.DateFormatYyyyMmDd)
+	dateOf := func(s string) calendar.Date {
+		d, _ := calendar.ParseDate(s, calendar.DateFormatYMD)
 		return d
 	}
 	timeOf := func(s string) Time {

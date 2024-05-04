@@ -1,8 +1,8 @@
 package zone
 
 import (
-	"github.com/Jumpaku/tokiope/date"
-	"github.com/Jumpaku/tokiope/date/iter"
+	"github.com/Jumpaku/tokiope/calendar"
+	"github.com/Jumpaku/tokiope/calendar/iter"
 	"github.com/Jumpaku/tokiope/datetime"
 )
 
@@ -18,9 +18,9 @@ type Rule interface {
 type rule struct {
 	OffsetMinutesBefore datetime.OffsetMinutes
 	OffsetMinutesAfter  datetime.OffsetMinutes
-	Month               date.Month
+	Month               calendar.Month
 	BaseDay             int
-	DayOfWeek           date.DayOfWeek
+	DayOfWeek           calendar.DayOfWeek
 	TimeOfDay           datetime.Time
 	TimeOffsetMinutes   datetime.OffsetMinutes
 }
@@ -28,10 +28,10 @@ type rule struct {
 func (r rule) doNotImplement(doNotImplement) {}
 
 func (r rule) Transition(year int) Transition {
-	dateIter := iter.OfDate(date.YyyyMmDd(year, r.Month, 1))
+	dateIter := iter.OfDate(calendar.DateOfYMD(year, r.Month, 1))
 	dateIter.Move(r.BaseDay - 1)
 
-	_, _, dow := dateIter.Get().YyyyWwD()
+	_, _, dow := dateIter.Get().YWD()
 	addDays := int((r.DayOfWeek - dow + 7) % 7)
 	dateIter.Move(addDays)
 

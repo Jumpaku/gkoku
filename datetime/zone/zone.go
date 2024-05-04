@@ -57,8 +57,8 @@ func (z Zone) FindOffset(at tokiope.Instant) datetime.OffsetMinutes {
 		}
 	}
 
-	minYear, _, _ := datetime.FromInstant(at, datetime.MinOffsetMinutes).Date().YyyyMmDd()
-	maxYear, _, _ := datetime.FromInstant(at, datetime.MaxOffsetMinutes).Date().YyyyMmDd()
+	minYear, _, _ := datetime.FromInstant(at, datetime.MinOffsetMinutes).Date().YMD()
+	maxYear, _, _ := datetime.FromInstant(at, datetime.MaxOffsetMinutes).Date().YMD()
 	rts := collectRuledTransitions(z.rules, minYear, maxYear)
 	rts = lo.Filter(rts, func(t Transition, _ int) bool {
 		n := len(ts)
@@ -128,8 +128,8 @@ func (z Zone) transitionsBetween(beginAt, endAt tokiope.Instant) []Transition {
 		}
 	}
 
-	minYear, _, _ := datetime.FromInstant(beginAt, datetime.MinOffsetMinutes).Date().YyyyMmDd()
-	maxYear, _, _ := datetime.FromInstant(endAt, datetime.MaxOffsetMinutes).Date().YyyyMmDd()
+	minYear, _, _ := datetime.FromInstant(beginAt, datetime.MinOffsetMinutes).Date().YMD()
+	maxYear, _, _ := datetime.FromInstant(endAt, datetime.MaxOffsetMinutes).Date().YMD()
 	for _, t := range collectRuledTransitions(z.rules, minYear, maxYear) {
 		if t.TransitionTimestamp.Cmp(beginAt) < 0 {
 			continue

@@ -1,7 +1,7 @@
 package zone
 
 import (
-	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/calendar"
 	"github.com/Jumpaku/tokiope/datetime"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -10,9 +10,9 @@ import (
 type RuleArg struct {
 	OffsetMinutesBefore datetime.OffsetMinutes
 	OffsetMinutesAfter  datetime.OffsetMinutes
-	Month               date.Month
+	Month               calendar.Month
 	BaseDay             int
-	DayOfWeek           date.DayOfWeek
+	DayOfWeek           calendar.DayOfWeek
 	TimeOfDay           datetime.Time
 	TimeOffsetMinutes   datetime.OffsetMinutes
 }

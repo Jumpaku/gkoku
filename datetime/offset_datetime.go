@@ -3,7 +3,7 @@ package datetime
 import (
 	"fmt"
 	"github.com/Jumpaku/tokiope"
-	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/calendar"
 	"github.com/Jumpaku/tokiope/internal/exact"
 	"regexp"
 	"strings"
@@ -12,12 +12,12 @@ import (
 type OffsetDateTime interface {
 	String() string
 	Offset() OffsetMinutes
-	Date() date.Date
+	Date() calendar.Date
 	Time() Time
 	Instant() tokiope.Instant
 }
 
-func NewOffsetDateTime(date date.Date, time Time, offset OffsetMinutes) OffsetDateTime {
+func NewOffsetDateTime(date calendar.Date, time Time, offset OffsetMinutes) OffsetDateTime {
 	return offsetDateTime{
 		date:   date,
 		time:   time,
@@ -28,7 +28,7 @@ func NewOffsetDateTime(date date.Date, time Time, offset OffsetMinutes) OffsetDa
 func FromInstant(at tokiope.Instant, offset OffsetMinutes) OffsetDateTime {
 	sec, nano := offset.AddTo(at).Unix()
 	unixDays, secondsOfDay, _ := exact.DivFloor(sec, tokiope.SecondsPerDay)
-	date := date.UnixDay(unixDays)
+	date := calendar.UnixDay(unixDays)
 	time := TimeFromSeconds(int(secondsOfDay), int(nano))
 	return NewOffsetDateTime(date, time, offset)
 }
@@ -40,7 +40,7 @@ func ParseOffsetDateTime(s string) (d OffsetDateTime, err error) {
 
 	arr := strings.Split(s, "T")
 
-	date, err := date.ParseDate(arr[0], date.DateFormatAny)
+	date, err := calendar.ParseDate(arr[0], calendar.DateFormatAny)
 	if err != nil {
 		return nil, fmt.Errorf(`failed to parse offset datetime: invalid date: %w`, err)
 	}
@@ -66,7 +66,7 @@ func FormatOffsetDateTime(d OffsetDateTime) string {
 }
 
 type offsetDateTime struct {
-	date   date.Date
+	date   calendar.Date
 	time   Time
 	offset OffsetMinutes
 }
@@ -79,7 +79,7 @@ func (d offsetDateTime) Offset() OffsetMinutes {
 	return d.offset
 }
 
-func (d offsetDateTime) Date() date.Date {
+func (d offsetDateTime) Date() calendar.Date {
 	return d.date
 }
 

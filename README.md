@@ -61,14 +61,14 @@ The `tokiope` package provides basic types to handle temporal values:
 - `Instant`: Represents an instantaneous point on the time-line, which is compatible with the UNIX time seconds.
 - `Duration`: Represents an amount of a difference between two instants.
 
-The tokiope/date package provides types to represent values on the calendar:
+The `tokiope/calendar` package provides types to represent values on the calendar:
 
 - `Date`: Represents a day on the calendar in the format of `yyyy-mm-dd`, `yyyy-Www-dd`, or `yyyy-ddd`.
 - `YearMonth`: Represents a month on the calendar in the format of `yyyy-mm`.
 - `YearWeek`: Represents a week on the calendar in the format of `yyyy-Www`.
 - `Year`: Represents a year on the calendar in the format of `yyyy`.
 
-The `tokiope/date/iter` package provides iterators on the calendar:
+The `tokiope/calendar/iter` package provides iterators on the calendar:
 
 - `DateIterator`: Iterates days on the calendar.
 - `YearMonthIterator`: Iterates months on the calendar.
@@ -111,7 +111,7 @@ Example code snippets demonstrating practical usage of `tokiope`'s functionaliti
 
 Since application-specific functionalities depend on individual product requirements, `tokiope` focuses on providing a solid foundation for basic time operations, which include:
 
-- Representation of temporal values, including `Instant`, `Duration`, `Date`, `OffsetDateTime`, `ZonedDateTime`.
+- Representation of temporal values, including `Instant`, `Date`, `OffsetDateTime`, and `ZonedDateTime`.
 - Conversion of temporal values, such as conversion between `Instant` and `OffsetDateTime`.
 - Handling time zones by the `tokiope/datetime/zone` package.
 - Instant-based temporal operations using `Instant` and `Duration`.

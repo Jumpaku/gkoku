@@ -3,20 +3,20 @@ package zone
 import (
 	"fmt"
 	"github.com/Jumpaku/tokiope"
-	"github.com/Jumpaku/tokiope/date"
+	"github.com/Jumpaku/tokiope/calendar"
 	"github.com/Jumpaku/tokiope/datetime"
 	"slices"
 )
 
 type ZonedDateTime interface {
-	Date() date.Date
+	Date() calendar.Date
 	Time() datetime.Time
 	Zone() Zone
 	String() string
 	InstantCandidates() []tokiope.Instant
 }
 
-func NewZonedDateTime(date date.Date, time datetime.Time, zone Zone) ZonedDateTime {
+func NewZonedDateTime(date calendar.Date, time datetime.Time, zone Zone) ZonedDateTime {
 	return zonedDateTime{
 		date: date,
 		time: time,
@@ -25,7 +25,7 @@ func NewZonedDateTime(date date.Date, time datetime.Time, zone Zone) ZonedDateTi
 }
 
 type zonedDateTime struct {
-	date date.Date
+	date calendar.Date
 	time datetime.Time
 	zone Zone
 }
@@ -38,7 +38,7 @@ func (d zonedDateTime) Zone() Zone {
 	return d.zone
 }
 
-func (d zonedDateTime) Date() date.Date {
+func (d zonedDateTime) Date() calendar.Date {
 	return d.date
 }
 
