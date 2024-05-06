@@ -1,0 +1,11 @@
+name: tokiope-tzot
+subcommands:
+  tags:
+    description: Lists version tags in "https://github.com/Jumpaku/tz-offset-transitions".
+  download:
+    description: Downloads the data of timezone offset transitions from "https://github.com/Jumpaku/tz-offset-transitions".
+    options:
+      -tag:
+        description: Specifies the version tag of the data. If not specified, the latest tag is selected.
+      -out-path:
+        description: Specifies the path where downloaded data is saved. If not specified, stdout is selected.
