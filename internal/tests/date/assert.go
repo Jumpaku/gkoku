@@ -17,8 +17,8 @@ func AssertEqualDate(t *testing.T, want calendar.Date, got calendar.Date) {
 
 func AssertEqualYearMonth(t *testing.T, want calendar.YearMonth, got calendar.YearMonth) {
 	t.Helper()
-	wy, wm := want.YyyyMm()
-	gy, gm := got.YyyyMm()
+	wy, wm := want.YM()
+	gy, gm := got.YM()
 	assert.Equal(t, wy, gy)
 	assert.Equal(t, wm, gm)
 
@@ -26,8 +26,8 @@ func AssertEqualYearMonth(t *testing.T, want calendar.YearMonth, got calendar.Ye
 
 func AssertEqualYearWeek(t *testing.T, want calendar.YearWeek, got calendar.YearWeek) {
 	t.Helper()
-	wy, ww := want.YyyyWw()
-	gy, gw := got.YyyyWw()
+	wy, ww := want.YW()
+	gy, gw := got.YW()
 	assert.Equal(t, wy, gy)
 	assert.Equal(t, ww, gw)
 

@@ -1,5 +1,7 @@
 package calendar
 
+// Month represents a month.
+//
 //go:generate stringer -type=Month -linecomment
 type Month int
 

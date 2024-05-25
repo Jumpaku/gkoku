@@ -24,6 +24,7 @@ const (
 	SecondsPerDay    = SecondsPerHour * HoursPerDay
 )
 
+// Duration represents an amount between two instants.
 type Duration struct {
 	state   State
 	seconds int64
@@ -33,6 +34,7 @@ type Duration struct {
 var MinDuration = Duration{seconds: math.MinInt64}
 var MaxDuration = Duration{seconds: math.MaxInt64, nano: NanosPerSecond - 1}
 
+// Seconds returns a Duration of seconds and nanoseconds.
 func Seconds(seconds int64, nano int64) (d Duration) {
 	secs, nanos, state := divFloor(nano, NanosPerSecond)
 	d.state |= state
@@ -44,21 +46,25 @@ func Seconds(seconds int64, nano int64) (d Duration) {
 	return
 }
 
+// Minutes returns a Duration of minutes.
 func Minutes(minutes int64) (d Duration) {
 	d.seconds, d.state = mul(minutes, SecondsPerMinute)
 	return
 }
 
+// Hours returns a Duration of hours.
 func Hours(hours int64) (d Duration) {
 	d.seconds, d.state = mul(hours, SecondsPerHour)
 	return
 }
 
+// Days returns a Duration of days.
 func Days(days int64) (d Duration) {
 	d.seconds, d.state = mul(days, SecondsPerDay)
 	return
 }
 
+// Nanoseconds returns a Duration of nanoseconds.
 func Nanoseconds(nanoseconds int64) (d Duration) {
 	secs, nano, state := divFloor(nanoseconds, NanosPerSecond)
 	d.seconds, d.nano, d.state = secs, int(nano), state
@@ -80,10 +86,12 @@ var _ interface {
 	String() string
 } = Duration{}
 
+// Seconds returns the number of seconds and nanoseconds.
 func (d Duration) Seconds() (seconds int64, nano int64) {
 	return d.seconds, int64(d.nano)
 }
 
+// Add returns the Duration adding the other duration.
 func (d Duration) Add(o Duration) (out Duration) {
 	out.state = d.State() | o.State()
 
@@ -100,11 +108,13 @@ func (d Duration) Add(o Duration) (out Duration) {
 	return
 }
 
+// AddNano returns the Duration adding the nanoseconds.
 func (d Duration) AddNano(nanoseconds int64) (out Duration) {
 	secs, nanos, _ := divFloor(nanoseconds, NanosPerSecond)
 	return d.Add(Duration{seconds: secs, nano: int(nanos)})
 }
 
+// Sub returns the Duration subtracting the other duration.
 func (d Duration) Sub(o Duration) (out Duration) {
 	out.state = d.State() | o.State()
 
@@ -122,11 +132,13 @@ func (d Duration) Sub(o Duration) (out Duration) {
 	return
 }
 
+// SubNano returns the Duration subtracting the nanoseconds.
 func (d Duration) SubNano(nanoseconds int64) (out Duration) {
 	secs, nanos, _ := divFloor(nanoseconds, NanosPerSecond)
 	return d.Sub(Duration{seconds: secs, nano: int(nanos)})
 }
 
+// Abs returns the absolute value of the Duration.
 func (d Duration) Abs() Duration {
 	if d.Sign() < 0 {
 		return d.Neg()
@@ -134,6 +146,7 @@ func (d Duration) Abs() Duration {
 	return d
 }
 
+// Sign returns the sign of the Duration.
 func (d Duration) Sign() int {
 	if d.seconds == 0 && d.nano == 0 {
 		return 0
@@ -144,6 +157,7 @@ func (d Duration) Sign() int {
 	return -1
 }
 
+// Neg returns the negated Duration.
 func (d Duration) Neg() (out Duration) {
 	out = d
 
@@ -163,6 +177,7 @@ func (d Duration) Neg() (out Duration) {
 	return
 }
 
+// Cmp compares the Duration with the other Duration.
 func (d Duration) Cmp(o Duration) int {
 	if d.less(o) {
 		return -1
@@ -187,6 +202,7 @@ func (d Duration) greater(o Duration) bool {
 	return d.seconds > o.seconds
 }
 
+// String returns the string representation of the Duration.
 func (d Duration) String() string {
 	return fmt.Sprintf(`%d.%09d`, d.seconds, d.nano)
 }

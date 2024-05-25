@@ -67,7 +67,7 @@ func Test_DateOfYMD(t *testing.T) {
 				assert.Equal(t, testcase.wantDay, gotDay)
 			}
 			{
-				gotYear, gotMonth := sut.YearMonth().YyyyMm()
+				gotYear, gotMonth := sut.YearMonth().YM()
 				assert.Equal(t, testcase.wantYear, gotYear)
 				assert.Equal(t, testcase.wantMonth, int(gotMonth))
 			}
@@ -116,7 +116,7 @@ func Test_DateOfYWD(t *testing.T) {
 			}
 			{
 				wantYear, wantWeek, _ := sut.YWD()
-				gotYear, gotWeek := sut.YearWeek().YyyyWw()
+				gotYear, gotWeek := sut.YearWeek().YW()
 				assert.Equal(t, wantYear, gotYear)
 				assert.Equal(t, wantWeek, gotWeek)
 			}

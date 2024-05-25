@@ -13,7 +13,8 @@ import (
 )
 
 // LoadProvider parses a JSON and returns a timezone Provider.
-// tzotJSONBytes must be a JSON that is an array of zone objects.
+// tzotJSONBytes must be a JSON that is according to the format of tz-offset-transitions.
+// https://github.com/Jumpaku/tz-offset-transitions
 func LoadProvider(tzotJSONBytes []byte, version string) (Provider, error) {
 	var tzotJSON tzotJSON
 	if err := json.Unmarshal(tzotJSONBytes, &tzotJSON); err != nil {
@@ -99,20 +100,24 @@ func CreateProvider(zones []Zone, version string) Provider {
 	return p
 }
 
+// Provider provides timezones.
 type Provider struct {
 	version string
 	zoneIDs []string
 	zoneMap map[string]Zone
 }
 
+// Version returns the version of the provider.
 func (p Provider) Version() string {
 	return p.version
 }
 
+// AvailableZoneIDs returns the timezone IDs of the available timezones.
 func (p Provider) AvailableZoneIDs() []string {
 	return p.zoneIDs
 }
 
+// Get returns the timezone of the given zone ID.
 func (p Provider) Get(zoneID string) (zone Zone, found bool) {
 	zone, found = p.zoneMap[zoneID]
 	return

@@ -14,7 +14,7 @@ import (
 //go:embed testdata/yearmonth_yyyymm.txt
 var testdataYearMonthYyyyMm []byte
 
-func TestYearMonth_YyyyMm(t *testing.T) {
+func TestYearMonth_YM(t *testing.T) {
 	type testcase struct {
 		sutYear, sutMonth   int
 		wantYear, wantMonth int
@@ -35,7 +35,7 @@ func TestYearMonth_YyyyMm(t *testing.T) {
 		t.Run(fmt.Sprintf("%d-%d", testcase.wantYear, testcase.wantMonth), func(t *testing.T) {
 			sut := YearMonthOf(testcase.sutYear, Month(testcase.sutMonth))
 			{
-				gotYear, gotMonth := sut.YyyyMm()
+				gotYear, gotMonth := sut.YM()
 				assert.Equal(t, testcase.wantYear, gotYear)
 				assert.Equal(t, testcase.wantMonth, int(gotMonth))
 			}

@@ -14,7 +14,7 @@ import (
 //go:embed testdata/yearweek_yyyyww.txt
 var testdataYearWeekYyyyWw []byte
 
-func TestYearWeek_YyyyWw(t *testing.T) {
+func TestYearWeek_YW(t *testing.T) {
 	type testcase struct {
 		sutYear, sutWeek int
 	}
@@ -33,7 +33,7 @@ func TestYearWeek_YyyyWw(t *testing.T) {
 		t.Run(fmt.Sprintf("%d-%d", testcase.sutYear, testcase.sutWeek), func(t *testing.T) {
 			sut := calendar.YearWeekOf(testcase.sutYear, testcase.sutWeek)
 			{
-				gotYear, gotWeek := sut.YyyyWw()
+				gotYear, gotWeek := sut.YW()
 				assert.Equal(t, testcase.sutYear, gotYear)
 				assert.Equal(t, testcase.sutWeek, gotWeek)
 			}

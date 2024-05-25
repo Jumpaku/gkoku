@@ -7,7 +7,8 @@ import (
 	"github.com/Jumpaku/tokiope/internal/exact"
 )
 
-// Date . The zero value represents 0001-01-01
+// Date represents a date in the proleptic Gregorian calendar.
+// The zero value is 0001-01-01.
 type Date struct {
 	days int64
 }
@@ -30,6 +31,8 @@ var _ interface {
 	String() string
 } = Date{}
 
+// DateOfYMD returns a Date of the given year, month, and day of month.
+// It panics if the arguments represents an invalid date.
 func DateOfYMD(year int, month Month, dayOfMonth int) Date {
 	assert.Params(MonthJanuary <= month && month <= MonthDecember, "month must be in [%d, %d]: %d", MonthJanuary, MonthDecember, month)
 	lastDayOfMonth := YearMonthOf(year, month).Days()
@@ -37,6 +40,8 @@ func DateOfYMD(year int, month Month, dayOfMonth int) Date {
 	return Date{days: daysFromYMD(year, month, dayOfMonth)}
 }
 
+// DateOfYWD returns a Date of the given year, week, and day of week.
+// It panics if the arguments represents an invalid date.
 func DateOfYWD(year int, week int, dayOfWeek DayOfWeek) Date {
 	assert.Params(DayOfWeekMonday <= dayOfWeek && dayOfWeek <= DayOfWeekSunday, "dayOfWeek must be in [%d, %d]: %d", DayOfWeekMonday, DayOfWeekSunday, dayOfWeek)
 	assert.Params(1 <= week && week <= 53, "week must be in [%d, %d]: %d", 1, 53, week)
@@ -47,76 +52,95 @@ func DateOfYWD(year int, week int, dayOfWeek DayOfWeek) Date {
 	}
 	return Date{days: days}
 }
+
+// DateOfYD returns a Date of the given year and day of year.
+// It panics if the arguments represents an invalid date.
 func DateOfYD(year int, dayOfYear int) Date {
 	lastDayOfYear := Year(year).Days()
 	assert.Params(1 <= dayOfYear && dayOfYear <= lastDayOfYear, "day must be in [%d, %d]: %d", 1, lastDayOfYear, dayOfYear)
 	return Date{days: daysFromYD(year, dayOfYear)}
 }
 
+// UnixDay returns a Date of the given epoch days since the Unix epoch.
 func UnixDay(epochDays int64) Date {
 	return Date{days: epochDays + days0000To1970 - 366}
 }
 
+// UnixDay returns the number of days since the Unix epoch.
 func (d Date) UnixDay() int64 {
 	return toEpochDays(d.YMD())
 }
 
+// YMD returns the year, month, and day of month.
 func (d Date) YMD() (year int, month Month, day int) {
 	return daysToYMD(d.days)
 }
 
+// YWD returns the year, week, and day of week.
 func (d Date) YWD() (year int, week int, dayOfWeek DayOfWeek) {
 	return daysToYWD(d.days)
 }
 
+// YD returns the year and day of year.
 func (d Date) YD() (year int, dayOfYear int) {
 	return daysToYD(d.days)
 }
 
+// Year returns the year including this date.
 func (d Date) Year() Year {
 	y, _ := d.YD()
 	return Year(y)
 }
 
+// YearMonth returns the year and month including this date.
 func (d Date) YearMonth() YearMonth {
 	y, m, _ := d.YMD()
 	return YearMonthOf(y, m)
 }
 
+// YearWeek returns the year and week including this date.
 func (d Date) YearWeek() YearWeek {
 	y, w, _ := d.YWD()
 	return YearWeekOf(y, w)
 }
 
+// Cmp compares the date with the other date.
 func (d Date) Cmp(other Date) int {
 	return cmp.Compare(d.days, other.days)
 }
 
+// Equal returns whether the date is equal to the other date.
 func (d Date) Equal(other Date) bool {
 	return d.days == other.days
 }
 
+// Before returns whether the date is before the other date.
 func (d Date) Before(other Date) bool {
 	return d.days < other.days
 }
 
+// After returns whether the date is after the other date.
 func (d Date) After(other Date) bool {
 	return d.days > other.days
 }
 
+// Add returns the date going forward by the amount of days.
 func (d Date) Add(days int) Date {
 	return Date{d.days + int64(days)}
 }
 
+// Sub returns the date going backward by the amount of days.
 func (d Date) Sub(days int) Date {
 	return Date{d.days - int64(days)}
 
 }
 
+// DaysUntil returns the number of days until the date of endExclusive.
 func (d Date) DaysUntil(endExclusive Date) int64 {
 	return endExclusive.days - d.days
 }
 
+// String returns the string representation of the date.
 func (d Date) String() string {
 	return FormatDate(d, DateFormatYMD)
 }

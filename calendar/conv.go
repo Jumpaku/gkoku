@@ -6,29 +6,29 @@ import (
 	"strconv"
 )
 
+// DateFormat represents the format of a date.
+// The following formats are supported:
+//
+// - DateFormatYMD: yyyy-mm-dd
+// - DateFormatYWD: yyyy-Www-d
+// - DateFormatYD: yyyy-ddd
+//
+// where y, m, d, and w are decimal digits and W is a rune 'W'.
+// Each of the above formats may have a prefix of '-' or '+' for the sign of the year.
 type DateFormat int
 
 const (
+	// DateFormatAny represents any date format.
 	DateFormatAny DateFormat = iota
+	// DateFormatYMD represents the yyyy-mm-dd format.
 	DateFormatYMD
+	// DateFormatYWD represents the yyyy-Www-d format.
 	DateFormatYWD
+	// DateFormatYD represents the yyyy-ddd format.
 	DateFormatYD
 )
 
 // ParseDate parses a formatted string and returns the Date value it represents.
-// The following formats are supported:
-//
-// - year-month-dayOfMonth:
-//   - yyyy-mm-dd:
-//
-// - year-dayOfYear:
-//   - yyyy-ddd
-//
-// - year-week-dayOfWeek:
-//   - yyyy-Www-d
-//
-// where y, m, d, and w are decimal digits and W is a rune 'W'.
-// Each of the above formats may have a prefix of '-' or '+' for the sign of the year.
 func ParseDate(s string, format DateFormat) (d Date, err error) {
 	reYMD := regexp.MustCompile(`^[-+]?\d{4,}-\d{2}-\d{2}$`)
 	reYWD := regexp.MustCompile(`^[-+]?\d{4,}-W\d{2}-\d$`)
@@ -173,8 +173,7 @@ func FormatDate(d Date, format DateFormat) string {
 // ParseYearMonth parses a formatted string and returns the YearMonth value it represents.
 // The following format is supported:
 //
-// - year-month:
-//   - yyyy-mm:
+//   - yyyy-mm
 //
 // where y and m are decimal digits.
 // The above format may have a prefix of '-' or '+' for the sign of the year.
@@ -203,7 +202,7 @@ func ParseYearMonth(s string) (YearMonth, error) {
 
 // FormatYearMonth returns a textual representation of the YearMonth value formatted.
 func FormatYearMonth(ym YearMonth) string {
-	y, m := ym.YyyyMm()
+	y, m := ym.YM()
 	sign := ""
 	if y < 0 {
 		sign = "-"
@@ -218,7 +217,7 @@ func FormatYearMonth(ym YearMonth) string {
 // - year-week:
 //   - yyyy-Www:
 //
-// where y and w are a decimal digits.
+// where y and w are a decimal digits and W is a rune 'W'.
 // The above format may have a prefix of '-' or '+' for the sign of the year.
 func ParseYearWeek(s string) (YearWeek, error) {
 	if !regexp.MustCompile(`^[-+]?\d{4,}-W\d{2}$`).MatchString(s) {
@@ -246,7 +245,7 @@ func ParseYearWeek(s string) (YearWeek, error) {
 
 // FormatYearWeek returns a textual representation of the YearWeek value formatted.
 func FormatYearWeek(yw YearWeek) string {
-	y, w := yw.YyyyWw()
+	y, w := yw.YW()
 	sign := ""
 	if y < 0 {
 		sign = "-"
@@ -258,7 +257,6 @@ func FormatYearWeek(yw YearWeek) string {
 // ParseYear parses a formatted string and returns the Year value it represents.
 // The following format is supported:
 //
-// - year:
 //   - yyyy:
 //
 // where y is a decimal digit.

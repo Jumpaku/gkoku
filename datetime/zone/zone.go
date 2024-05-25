@@ -10,12 +10,14 @@ import (
 	"sort"
 )
 
+// Transition represents a timezone offset transition.
 type Transition struct {
 	TransitionTimestamp tokiope.Instant
 	OffsetMinutesBefore datetime.OffsetMinutes
 	OffsetMinutesAfter  datetime.OffsetMinutes
 }
 
+// Zone represents a timezone with transitions and rules.
 type Zone struct {
 	id          string
 	transitions []Transition
@@ -35,6 +37,7 @@ func Create(zoneID string, transitions []Transition, rules []Rule) Zone {
 	}
 }
 
+// CreateFixed creates a Zone with the given zone ID and fixed offset.
 func CreateFixed(zoneID string, offset datetime.OffsetMinutes) Zone {
 	return Create(zoneID, []Transition{
 		{
@@ -45,6 +48,7 @@ func CreateFixed(zoneID string, offset datetime.OffsetMinutes) Zone {
 	}, nil)
 }
 
+// FindOffset finds the timezone offset at the given instant.
 func (z Zone) FindOffset(at tokiope.Instant) datetime.OffsetMinutes {
 	ts, rs := z.transitions, z.rules
 	if len(ts) == 0 && len(rs) == 0 {
@@ -145,6 +149,7 @@ func (z Zone) transitionsBetween(beginAt, endAt tokiope.Instant) []Transition {
 	return narrowed
 }
 
+// ID returns the ID of the zone.
 func (z Zone) ID() string {
 	return z.id
 }

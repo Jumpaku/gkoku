@@ -62,7 +62,7 @@ func TestYear_Week(t *testing.T) {
 	for sut := calendar.Year(-9999); sut <= 9999; sut++ {
 		for w := 1; w <= sut.Weeks(); w++ {
 			t.Run(fmt.Sprintf("Week %d", sut), func(t *testing.T) {
-				gotY, gotW := sut.Week(w).YyyyWw()
+				gotY, gotW := sut.Week(w).YW()
 				assert.Equal(t, int(sut), gotY)
 				assert.Equal(t, w, gotW)
 			})
@@ -73,7 +73,7 @@ func TestYear_Week(t *testing.T) {
 func TestYear_FirstWeek(t *testing.T) {
 	for sut := calendar.Year(-9999); sut <= 9999; sut++ {
 		t.Run(fmt.Sprintf("FirstWee %d", sut), func(t *testing.T) {
-			gotY, gotW := sut.FirstWeek().YyyyWw()
+			gotY, gotW := sut.FirstWeek().YW()
 			assert.Equal(t, int(sut), gotY)
 			assert.Equal(t, 1, gotW)
 		})
@@ -88,7 +88,7 @@ func TestYear_LastWeek(t *testing.T) {
 				want = 53
 			}
 			assert.Equal(t, want, sut.Weeks())
-			gotY, gotW := sut.LastWeek().YyyyWw()
+			gotY, gotW := sut.LastWeek().YW()
 			assert.Equal(t, int(sut), gotY)
 			assert.Equal(t, want, gotW)
 		})
@@ -166,7 +166,7 @@ func TestYear_Month(t *testing.T) {
 	for sut := calendar.Year(-9999); sut <= 9999; sut++ {
 		for m := calendar.MonthJanuary; m <= calendar.MonthDecember; m++ {
 			t.Run(fmt.Sprintf("Month %d", sut), func(t *testing.T) {
-				gotY, gotM := sut.Month(m).YyyyMm()
+				gotY, gotM := sut.Month(m).YM()
 				assert.Equal(t, int(sut), gotY)
 				assert.Equal(t, m, gotM)
 			})
@@ -177,7 +177,7 @@ func TestYear_Month(t *testing.T) {
 func TestYear_FirstMonth(t *testing.T) {
 	for sut := calendar.Year(-9999); sut <= 9999; sut++ {
 		t.Run(fmt.Sprintf("FirstMonth %d", sut), func(t *testing.T) {
-			gotY, gotM := sut.FirstMonth().YyyyMm()
+			gotY, gotM := sut.FirstMonth().YM()
 			assert.Equal(t, int(sut), gotY)
 			assert.Equal(t, calendar.MonthJanuary, gotM)
 		})
@@ -187,7 +187,7 @@ func TestYear_FirstMonth(t *testing.T) {
 func TestYear_LastMonth(t *testing.T) {
 	for sut := calendar.Year(-9999); sut <= 9999; sut++ {
 		t.Run(fmt.Sprintf("LastMonth %d", sut), func(t *testing.T) {
-			gotY, gotM := sut.LastMonth().YyyyMm()
+			gotY, gotM := sut.LastMonth().YM()
 			assert.Equal(t, int(sut), gotY)
 			assert.Equal(t, calendar.MonthDecember, gotM)
 		})

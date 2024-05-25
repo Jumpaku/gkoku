@@ -1,5 +1,7 @@
 package calendar
 
+// DayOfWeek represents a day of week.
+//
 //go:generate stringer -type=DayOfWeek -linecomment
 type DayOfWeek int
 

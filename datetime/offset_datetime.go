@@ -9,14 +9,21 @@ import (
 	"strings"
 )
 
+// OffsetDateTime represents a date and time with an offset from UTC.
 type OffsetDateTime interface {
+	// String returns the string representation of the offset datetime.
 	String() string
+	// Offset returns the offset from UTC.
 	Offset() OffsetMinutes
+	// Date returns the date of the offset datetime.
 	Date() calendar.Date
+	// Time returns the time of the offset datetime.
 	Time() Time
+	// Instant returns the instant corresponding to the offset datetime.
 	Instant() tokiope.Instant
 }
 
+// NewOffsetDateTime creates an OffsetDateTime from the date, time, and offset.
 func NewOffsetDateTime(date calendar.Date, time Time, offset OffsetMinutes) OffsetDateTime {
 	return offsetDateTime{
 		date:   date,
@@ -25,6 +32,7 @@ func NewOffsetDateTime(date calendar.Date, time Time, offset OffsetMinutes) Offs
 	}
 }
 
+// FromInstant creates an OffsetDateTime from the instant and the offset.
 func FromInstant(at tokiope.Instant, offset OffsetMinutes) OffsetDateTime {
 	sec, nano := offset.AddTo(at).Unix()
 	unixDays, secondsOfDay, _ := exact.DivFloor(sec, tokiope.SecondsPerDay)
@@ -33,6 +41,11 @@ func FromInstant(at tokiope.Instant, offset OffsetMinutes) OffsetDateTime {
 	return NewOffsetDateTime(date, time, offset)
 }
 
+// ParseOffsetDateTime parses the offset datetime from the string.
+// The format of the string is "<date>T<time><offset>" where:
+// - <date> is the date in the format of "[+-]yyyy-mm-dd",
+// - <time> is the time in the format of "hh:mm:ss[.SSSSSSSSS]",
+// - <offset> is the offset in the format of "Z" or "[+-]HH:MM".
 func ParseOffsetDateTime(s string) (d OffsetDateTime, err error) {
 	if !regexp.MustCompile(`^.*T.*(Z|([-+].*))$`).MatchString(s) {
 		return nil, fmt.Errorf(`failed to parse offset datetime: invalid format: %q`, s)
@@ -61,6 +74,7 @@ func ParseOffsetDateTime(s string) (d OffsetDateTime, err error) {
 	return NewOffsetDateTime(date, time, offset), nil
 }
 
+// FormatOffsetDateTime formats the offset datetime to a string.
 func FormatOffsetDateTime(d OffsetDateTime) string {
 	return fmt.Sprintf(`%s%s%s`, d.Date().String(), d.Time().String(), d.Offset().String())
 }

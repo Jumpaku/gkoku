@@ -2,14 +2,23 @@ package iter
 
 import "github.com/Jumpaku/tokiope/calendar"
 
+// YearWeekIterator is an iterator iterating on year-weeks of the calendar.
 type YearWeekIterator interface {
+	// Get returns the current year-week.
 	Get() calendar.YearWeek
+	// Copy returns a copy of this iterator.
 	Copy() YearWeekIterator
+	// Move moves this iterator by the given weeks.
 	Move(weeks int)
+	// Diff returns the number of weeks from the given iterator to this iterator.
 	Diff(from YearWeekIterator) int
+	// Year returns a YearIterator of the year including the year-week.
 	Year() YearIterator
+	// Date returns a DateIterator of the day of week in the year-week.
 	Date(dayOfWeek calendar.DayOfWeek) DateIterator
+	// FirstDate returns the first date in the year-week.
 	FirstDate() DateIterator
+	// LastDate returns the last date in the year-week.
 	LastDate() DateIterator
 }
 

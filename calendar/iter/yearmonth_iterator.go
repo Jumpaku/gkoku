@@ -2,15 +2,25 @@ package iter
 
 import "github.com/Jumpaku/tokiope/calendar"
 
+// YearMonthIterator is an iterator iterating on year-months of the calendar.
 type YearMonthIterator interface {
+	// Get returns the current year-month.
 	Get() calendar.YearMonth
+	// Copy returns a copy of this iterator.
 	Copy() YearMonthIterator
+	// Move moves this iterator by the given months.
 	Move(months int)
+	// Diff returns the number of months from the given iterator to this iterator.
 	Diff(from YearMonthIterator) int
+	// Year returns a YearIterator of the year including the year-month.
 	Year() YearIterator
+	// Days returns the number of days in the year-month.
 	Days() int
+	// Date returns a DateIterator of the day of month in the year-month.
 	Date(dayOfMonth int) DateIterator
+	// FirstDate returns the first date in the year-month.
 	FirstDate() DateIterator
+	// LastDate returns the last date in the year-month.
 	LastDate() DateIterator
 }
 

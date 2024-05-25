@@ -8,14 +8,20 @@ import (
 	"strings"
 )
 
+// OffsetMinutes represents the offset from UTC in minutes.
 type OffsetMinutes int
 
 const (
+	// ZeroOffsetMinutes represents the offset of UTC.
 	ZeroOffsetMinutes OffsetMinutes = 0
-	MaxOffsetMinutes  OffsetMinutes = 14 * 60
-	MinOffsetMinutes  OffsetMinutes = -14 * 60
+	// MaxOffsetMinutes represents the maximum offset in minutes.
+	MaxOffsetMinutes OffsetMinutes = 14 * 60
+	// MinOffsetMinutes represents the minimum offset in minutes.
+	MinOffsetMinutes OffsetMinutes = -14 * 60
 )
 
+// ParseOffset parses the offset from the string.
+// The format of the string is either "Z" or "[+-]HH:MM".
 func ParseOffset(s string) (offset OffsetMinutes, err error) {
 	if !regexp.MustCompile(`^(Z|([+-]\d\d(:?\d\d)?))$`).MatchString(s) {
 		return 0, fmt.Errorf(`failed to parse offset: invalid format: %q`, s)
@@ -56,6 +62,7 @@ func ParseOffset(s string) (offset OffsetMinutes, err error) {
 	return OffsetMinutes(sign * (hour*60 + minute)), nil
 }
 
+// FormatOffset formats the offset to the string.
 func FormatOffset(offset OffsetMinutes) string {
 	s := "+"
 	if offset < 0 {
@@ -73,10 +80,12 @@ var _ interface {
 	AddTo(i tokiope.Instant) tokiope.Instant
 } = OffsetMinutes(0)
 
+// String returns the string representation of the offset.
 func (o OffsetMinutes) String() string {
 	return FormatOffset(o)
 }
 
+// AddTo adds the offset to the instant.
 func (o OffsetMinutes) AddTo(i tokiope.Instant) tokiope.Instant {
 	return i.Add(tokiope.Minutes(int64(o)))
 }

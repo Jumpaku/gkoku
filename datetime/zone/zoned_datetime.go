@@ -8,14 +8,25 @@ import (
 	"slices"
 )
 
+// ZonedDateTime represents a datetime with a timezone.
+// Note that ZonedDateTime may represent no Instant or multiple possible Instants.
 type ZonedDateTime interface {
+	// Date returns the date of the zoned datetime.
 	Date() calendar.Date
+	// Time returns the time of the zoned datetime.
 	Time() datetime.Time
+	// Zone returns the timezone of the zoned datetime.
 	Zone() Zone
+	// String returns the string representation of the zoned datetime.
 	String() string
+	// InstantCandidates returns the possible instants corresponding to the zoned datetime.
+	// The returned slice contains a single instant if the corresponding instant exists uniquely.
+	// The returned slice is empty if the corresponding instant does not exist due to gaps.
+	// The returned slice contains multiple instants in ascending order if the corresponding instants are possible due to overlaps.
 	InstantCandidates() []tokiope.Instant
 }
 
+// NewZonedDateTime creates a ZonedDateTime from the date, time, and zone.
 func NewZonedDateTime(date calendar.Date, time datetime.Time, zone Zone) ZonedDateTime {
 	return zonedDateTime{
 		date: date,

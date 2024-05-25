@@ -10,8 +10,10 @@ type doNotImplement interface {
 	doNotImplement(doNotImplement)
 }
 
+// Rule defines when the yearly timezone offset transition occurs in the future.
 type Rule interface {
 	doNotImplement
+	// Transition returns the transition of the timezone offset in the given year.
 	Transition(year int) Transition
 }
 

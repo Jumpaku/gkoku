@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// Time represents a time of day.
 type Time struct {
 	hour   int
 	minute int
@@ -16,6 +17,7 @@ type Time struct {
 	nano   int
 }
 
+// TimeOf creates a Time from the hour, minute, second, and nano.
 func TimeOf(hour, minute, second, nano int) Time {
 	assert.Params(0 <= hour && hour <= 24, "hour must be in [0,24]: %d", hour)
 	assert.Params(0 <= minute && minute < 60, "minute must be in [0,60): %d", minute)
@@ -29,6 +31,8 @@ func TimeOf(hour, minute, second, nano int) Time {
 	return Time{hour: hour, minute: minute, second: second, nano: nano}
 }
 
+// TimeFromSeconds creates a Time from the seconds of day and nano.
+// It panics if the secondsOfDay and nano represents an invalid time.
 func TimeFromSeconds(secondsOfDay, nano int) Time {
 	assert.Params(0 <= secondsOfDay && secondsOfDay <= tokiope.SecondsPerDay, "secondsOfDay must be in [0,%d]: %d", tokiope.SecondsPerDay, secondsOfDay)
 	assert.Params(0 <= nano && nano < 1_000_000_000, "nano must be in [0,1_000_000_000): %d", nano)
@@ -40,6 +44,8 @@ func TimeFromSeconds(secondsOfDay, nano int) Time {
 	return Time{hour: hour, minute: minute, second: second, nano: nano}
 }
 
+// ParseTime parses the Time from the string.
+// The format of the string is "T?hh:mm:ss[.SSSSSSSSS]".
 func ParseTime(s string) (Time, error) {
 	if !regexp.MustCompile(`^T?\d\d(:\d\d(:\d\d([,.]\d{1,9})?)?)?$`).MatchString(s) {
 		return Time{}, fmt.Errorf("fail to parse Time: invalid format: %q", s)
@@ -98,6 +104,7 @@ func ParseTime(s string) (Time, error) {
 	return TimeOf(hour, minute, second, nano), nil
 }
 
+// FormatTime formats the Time to a string.
 func FormatTime(t Time) string {
 	return fmt.Sprintf(`T%02d:%02d:%02d.%09d`, t.Hour(), t.Minute(), t.Second(), t.Nano())
 }
@@ -110,22 +117,27 @@ var _ interface {
 	String() string
 } = Time{}
 
+// Hour returns the hour of the Time.
 func (t Time) Hour() int {
 	return t.hour
 }
 
+// Minute returns the minute of the Time.
 func (t Time) Minute() int {
 	return t.minute
 }
 
+// Second returns the second of the Time.
 func (t Time) Second() int {
 	return t.second
 }
 
+// Nano returns the nano of the Time.
 func (t Time) Nano() int {
 	return t.nano
 }
 
+// String returns the string representation of the Time.
 func (t Time) String() string {
 	return FormatTime(t)
 }
